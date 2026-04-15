@@ -1,50 +1,130 @@
-body {
-    font-family: Arial;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    margin: 0;
+body{
+  background: linear-gradient(135deg,#3b0a1a,#1a020a);
+  color:#f8e1e7;
 }
 
-.login-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 10px;
-    text-align: center;
+/* NAVBAR */
+.navbar{
+  background:#4a0d1f;
 }
 
-input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px;
+/* LOGO */
+.logo{
+  width: 120x;
+  margin-bottom:20px;
+  filter:drop-shadow(0 5px 10px rgba(0,0,0,0.5));
 }
 
-button {
-    padding: 10px 20px;
-    background: #4facfe;
-    border: none;
-    color: white;
-    cursor: pointer;
+/* LINKS */
+.nav-links a{
+  color:#f8e1e7;
 }
 
-header {
-    background: #333;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
+.nav-links a:hover{
+  color:#ff4d6d;
 }
 
-.contenedor {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
+/* DROPDOWN */
+.dropdown{
+  background:#2a0612;
 }
 
-.semana {
-    background: white;
-    padding: 20px;
-    margin: 10px;
-    width: 250px;
-    border-radius: 10px;
+.dropdown a{
+  color:#f8e1e7;
 }
+
+.dropdown a:hover{
+  background:#5a1025;
+  color:#ff4d6d;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  min-height:80vh;
+  padding:20px;
+}
+
+/* LOGIN */
+.body{
+  background: linear-gradient(135deg,#3b0a1a,#1a020a);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* CENTRADO */
+.login{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* CAJA */
+.login-box{
+  background:rgba(59,10,26,0.9);
+  padding:40px;
+  border-radius:20px;
+  width:350px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.7);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+}
+
+/* TITULO */
+.login-box h2{
+  margin-bottom:5px;
+  color:#ff4d6d;
+}
+
+/* SUBTEXTO */
+.sub{
+  font-size:13px;
+  color:#f3c4cf;
+  margin-bottom:20px;
+}
+
+/* INPUTS */
+.login-box input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:10px;
+  background:#1a020a;
+  color:white;
+  outline:none;
+}
+
+/* BOTON */
+.login-box button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(45deg,#ff4d6d,#ff1f4b);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.login-box button:hover{
+  transform:scale(1.05);
+}
+
+/* ERROR */
+#error{
+  margin-top:10px;
+  color:#ff9aa2;
+  font-size:13px;
+}
+
+.login-box button{
+  background:#ff4d6d;
+}
+

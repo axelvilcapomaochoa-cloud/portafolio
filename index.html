@@ -3,195 +3,283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio Profesional</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Portafolio</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:#0f172a;color:white;transition:0.3s}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 
-.light{background:#f1f5f9;color:#0f172a}
+/* FONDO GUINDA */
+body{
+  background: linear-gradient(135deg,#3b0a1a,#1a020a);
+  color:#f8e1e7;
+}
 
-.login{height:100vh;display:flex;justify-content:center;align-items:center}
-.login-box{background:#111827;padding:40px;border-radius:20px;width:340px;text-align:center}
-.login-box input{width:100%;padding:12px;margin:10px 0;border:none;border-radius:10px}
-.login-box button{width:100%;padding:12px;border:none;border-radius:10px;background:#38bdf8;color:white}
-
-.dashboard{display:none}
-header{text-align:center;padding:20px;font-size:22px}
-
-.topbar{display:flex;justify-content:flex-end;gap:10px;padding:10px}
-button{cursor:pointer}
-
-.contenido{max-width:1000px;margin:auto;padding:20px}
-.section{margin-bottom:40px}
-.box{background:#111827;padding:25px;border-radius:20px;margin-top:15px}
-.light .box{background:white}
-
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-.card{background:#111827;border-radius:20px;padding:20px;text-align:center;transition:0.3s}
-.light .card{background:white}
-.card:hover{transform:scale(1.05)}
-
-img{width:100%;border-radius:10px;margin-top:10px}
-
-.tag{display:inline-block;margin-top:10px;padding:5px 10px;border-radius:20px;background:#0ea5e9;font-size:12px}
-
-.progress{background:#1e293b;border-radius:10px;overflow:hidden;margin-top:10px}
-.progress div{height:10px;background:#38bdf8}
-.hero{
-  height:60vh;
-  background:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7') center/cover no-repeat;
+/* LOGIN */
+.login{
+  position:fixed;
+  width:100%;
+  height:100vh;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
+}
+
+.login-box{
+  background:#2a0612;
+  padding:40px;
+  border-radius:15px;
   text-align:center;
 }
 
-.hero-content{
-  background:rgba(0,0,0,0.5);
-  padding:40px;
-  border-radius:20px;
+.login-box input{
+  display:block;
+  width:250px;
+  padding:10px;
+  margin:10px auto;
+  border:none;
+  border-radius:8px;
+}
+
+.login-box button{
+  padding:10px 20px;
+  background:#ff4d6d;
+  border:none;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 40px;
+  background:#4a0d1f;
+}
+
+.logo{
+  color:#ff4d6d;
+  font-weight:bold;
+}
+
+.nav-links{
+  display:flex;
+  gap:25px;
+}
+
+.nav-links a{
+  color:#f8e1e7;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.nav-links a:hover{
+  color:#ff4d6d;
+}
+
+.nav-item{
+  position:relative;
+}
+
+/* DROPDOWN */
+.dropdown{
+  display:none;
+  position:absolute;
+  top:40px;
+  left:0;
+  background:#2a0612;
+  border-radius:10px;
+  padding:10px;
+  min-width:160px;
+}
+
+.dropdown a{
+  display:block;
+  padding:10px;
+  color:#f8e1e7;
+  text-decoration:none;
+  border-radius:8px;
+}
+
+.dropdown a:hover{
+  background:#5a1025;
+  color:#ff4d6d;
+}
+
+/* HERO */
+.hero{
+  height:70vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
 
 .hero h1{
   font-size:40px;
+  color:#ff4d6d;
 }
 
 .hero p{
-  margin:10px 0;
+  color:#f3c4cf;
 }
-
-.btn-hero{
-  padding:10px 20px;
-  border:none;
-  background:#38bdf8;
-  color:white;
-  border-radius:10px;
-}
-
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div class="login" id="login">
-<div class="login-box">
-<h2>Acceso</h2>
-<input type="text" id="user" placeholder="Usuario">
-<input type="password" id="pass" placeholder="Contraseña">
-<button onclick="login()">Ingresar</button>
-<p id="error"></p>
-</div>
-</div>
+<<div class="login" id="login">
+  <div class="login-box">
+    <h2>Bienvenido</h2>
+    <p class="sub">Accede a tu portafolio</p>
 
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+    <input type="text" id="user" placeholder="👤 Usuario">
+    <input type="password" id="pass" placeholder="🔒 Contraseña">
 
-<div class="topbar">
-<button onclick="modo()">🌙 / ☀️</button>
-<button onclick="logout()">Salir</button>
-</div>
+    <button onclick="login()">Ingresar</button>
 
-<div class="hero">
-  <div class="hero-content">
-    <h1>Mi Portafolio</h1>
-    <p>Desarrollo de proyectos y soluciones tecnológicas</p>
-    <button class="btn-hero">Ver trabajos</button>
+    <p id="error"></p>
   </div>
 </div>
 
-<div class="contenido">
+<!-- CONTENIDO -->
+<div id="contenido" style="display:none;">
+<div class="navbar">
+  <div class="logo">&lt;/&gt; Portafolio</div>
 
-<!-- SOBRE MI -->
-<div class="section">
-<h2>Sobre mí</h2>
-<div class="box">
-<p>Soy estudiante de Sistemas enfocado en desarrollo web y software. Me gusta crear soluciones modernas con buen diseño y funcionalidad.</p>
-</div>
+  <div class="nav-links">
+    <a onclick="logout()">Cerrar sesión</a>
+    <a href="#">Inicio</a>
+    
+    <!-- UNIDAD 1 -->
+    <div class="nav-item">
+      <a onclick="toggleMenu('m1')">Unidad 1 ▼</a>
+      <div class="dropdown" id="m1">
+        <a href="u1s1.html">Semana 1</a>
+        <a href="u1s2.html">Semana 2</a>
+        <a href="u1s3.html">Semana 3</a>
+        <a href="u1s4.html">Semana 4</a>
+      </div>
+    </div>
+
+    <!-- UNIDAD 2 -->
+    <div class="nav-item">
+      <a onclick="toggleMenu('m2')">Unidad 2 ▼</a>
+      <div class="dropdown" id="m2">
+        <a href="u2s1.html">Semana 1</a>
+        <a href="u2s2.html">Semana 2</a>
+        <a href="u2s3.html">Semana 3</a>
+        <a href="u2s4.html">Semana 4</a>
+      </div>
+    </div>
+
+    <!-- UNIDAD 3 -->
+    <div class="nav-item">
+      <a onclick="toggleMenu('m3')">Unidad 3 ▼</a>
+      <div class="dropdown" id="m3">
+        <a href="u3s1.html">Semana 1</a>
+        <a href="u3s2.html">Semana 2</a>
+        <a href="u3s3.html">Semana 3</a>
+        <a href="u3s4.html">Semana 4</a>
+      </div>
+    </div>
+
+    <!-- UNIDAD 4 -->
+    <div class="nav-item">
+      <a onclick="toggleMenu('m4')">Unidad 4 ▼</a>
+      <div class="dropdown" id="m4">
+        <a href="u4s1.html">Semana 1</a>
+        <a href="u4s2.html">Semana 2</a>
+        <a href="u4s3.html">Semana 3</a>
+        <a href="u4s4.html">Semana 4</a>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<!-- HABILIDADES -->
-<div class="section">
-<h2>Habilidades</h2>
-<div class="box">
-<p>Java</p>
-<div class="progress"><div style="width:80%"></div></div>
-<p>SQL</p>
-<div class="progress"><div style="width:75%"></div></div>
-<p>JavaScript</p>
-<div class="progress"><div style="width:70%"></div></div>
-</div>
-</div>
+<div class="hero">
 
-<!-- PROYECTOS -->
-<div class="section">
-<h2>Trabajos</h2>
-<div class="cards">
+  <img src="imagenes/upla.png" width= "200">
 
-<div class="card">
-<h3>Semana 1</h3>
-<p>Creación de estructura HTML</p>
-<img src="https://via.placeholder.com/300x150">
-<a href="archivo1.pdf" target="_blank">Ver trabajo</a>
-<span class="tag">HTML</span>
-</div>
+  <h1>Portafolio Académico</h1>
+  
+  <p class="desc">
+    Soy estudiante de Ingeniería de Sistemas en la UPLA.  
+    En este portafolio presento mis trabajos organizados por unidades y semanas, 
+    desarrollados durante el curso de Base de Datos II.
+  </p>
 
-<div class="card">
-<h3>Semana 2</h3>
-<p>Diseño con CSS</p>
-<img src="https://via.placeholder.com/300x150">
-<a href="archivo2.pdf" target="_blank">Ver trabajo</a>
-<span class="tag">CSS</span>
-</div>
+  <div class="info">
+    <div class="box">
+      <h3>📘 Curso</h3>
+      <p>Base de Datos II</p>
+    </div>
 
-<div class="card">
-<h3>Semana 3</h3>
-<p>Programación JS</p>
-<img src="https://via.placeholder.com/300x150">
-<a href="archivo3.pdf" target="_blank">Ver trabajo</a>
-<span class="tag">JS</span>
-</div>
+    <div class="box">
+      <h3>🏫 Universidad</h3>
+      <p>Universidad Peruana Los Andes</p>
+    </div>
 
-</div>
-</div>
+    <div class="box">
+      <h3>💻 Área</h3>
+      <p>Ingeniería de Sistemas</p>
+    </div>
+  </div>
 
-</div>
 </div>
 
 <script>
-
-// LOGIN CON MEMORIA
-window.onload = function(){
- if(localStorage.getItem('login')==='true'){
-   document.getElementById('login').style.display='none';
-   document.getElementById('dashboard').style.display='block';
- }
-}
 
 function login(){
  let u=document.getElementById('user').value;
  let p=document.getElementById('pass').value;
 
  if(u==='admin' && p==='1234'){
-   localStorage.setItem('login','true');
+   localStorage.setItem("sesion","activa"); // 🔥 guarda sesión
    document.getElementById('login').style.display='none';
-   document.getElementById('dashboard').style.display='block';
+   document.getElementById('contenido').style.display='block';
  }else{
    document.getElementById('error').innerText='Datos incorrectos';
  }
 }
 
-function logout(){
- localStorage.removeItem('login');
- location.reload();
+// 🔥 verificar sesión automáticamente
+window.onload = function(){
+  if(localStorage.getItem("sesion") === "activa"){
+    document.getElementById('login').style.display='none';
+    document.getElementById('contenido').style.display='block';
+  }
 }
 
-// MODO OSCURO / CLARO
-function modo(){
- document.body.classList.toggle('light');
+// 🔥 cerrar sesión
+function logout(){
+  localStorage.removeItem("sesion");
+  location.reload();
 }
+
+// MENÚ CLICK
+function toggleMenu(id){
+  let menu = document.getElementById(id);
+
+  document.querySelectorAll('.dropdown').forEach(m=>{
+    if(m.id !== id){
+      m.style.display = 'none';
+    }
+  });
+
+  menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+}
+
+// CERRAR SI HACES CLICK FUERA
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.nav-item')){
+    document.querySelectorAll('.dropdown').forEach(m=>{
+      m.style.display='none';
+    });
+  }
+});
 
 </script>
 

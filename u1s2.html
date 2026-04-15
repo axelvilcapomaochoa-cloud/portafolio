@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semana 2</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+/* FONDO GUINDA */
+body{
+  background: linear-gradient(135deg,#3b0a1a,#1a020a);
+  color:white;
+}
+
+/* CONTENEDOR */
+.container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  min-height:100vh;
+  padding:20px;
+}
+
+/* TITULO */
+h1{
+  margin-bottom:30px;
+  color:#ff4d6d;
+}
+
+/* TARJETA */
+.card{
+  background:#2a0612;
+  padding:30px;
+  border-radius:15px;
+  width:350px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+}
+
+/* TEXTO */
+.card p{
+  margin:10px 0;
+  color:#f3c4cf;
+}
+
+/* BOTÓN */
+.btn{
+  display:inline-block;
+  margin-top:15px;
+  padding:12px 20px;
+  background:#ff4d6d;
+  color:white;
+  text-decoration:none;
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.btn:hover{
+  background:#ff1f4b;
+}
+
+/* BOTÓN VOLVER */
+.volver{
+  position:absolute;
+  top:20px;
+  left:20px;
+  text-decoration:none;
+  background:#ff4d6d;
+  padding:8px 15px;
+  border-radius:8px;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html" class="volver">← Volver</a>
+
+<div class="container">
+
+<h1>Unidad 1 - Semana 2</h1>
+
+<div class="card">
+  <h3>Tarea 1</h3>
+  <p>Trabajo de Base de Datos II</p>
+
+  <a href="pdf/semana1.pdf" target="_blank" class="btn">
+    Ver PDF
+  </a>
+</div>
+
+</div>
+
+</body>
+</html>
