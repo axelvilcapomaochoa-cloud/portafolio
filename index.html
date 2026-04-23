@@ -1,287 +1,380 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio</title>
-
+<title>Portafolio · Base de Datos II · UPLA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-
-/* FONDO GUINDA */
-body{
-  background: linear-gradient(135deg,#3b0a1a,#1a020a);
-  color:#f8e1e7;
+:root {
+  /* ══════════════════════════════════════════════
+     🎨 COLORES — modifica aquí para cambiar todo
+     ══════════════════════════════════════════════
+     --bg        : fondo principal (muy oscuro)
+     --bg2       : fondo de tarjetas
+     --bg3       : fondo de inputs
+     --accent    : color principal (guinda claro)
+     --accent2   : color del botón Ingresar
+     --accent3   : color dorado / terciario
+     --text      : texto principal
+     --muted     : texto secundario / gris
+     --border    : color de bordes
+     --glow      : sombra de brillo
+  */
+  --bg:#1a020a; --bg2:#2a0612; --bg3:#3b0a1a;
+  --accent:#ff4d6d; --accent2:#c0152f; --accent3:#f59e0b;
+  --text:#fff0f3; --muted:#d4a0aa; --border:rgba(255,77,109,0.12);
+  --glow:0 0 40px rgba(255,77,109,0.15);
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
 
-/* LOGIN */
-.login{
-  position:fixed;
-  width:100%;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.login-box{
-  background:#2a0612;
-  padding:40px;
-  border-radius:15px;
-  text-align:center;
-}
-
-.login-box input{
-  display:block;
-  width:250px;
-  padding:10px;
-  margin:10px auto;
-  border:none;
-  border-radius:8px;
-}
-
-.login-box button{
-  padding:10px 20px;
-  background:#ff4d6d;
-  border:none;
-  border-radius:8px;
-  color:white;
-  cursor:pointer;
-}
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 /* NAVBAR */
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  padding:15px 40px;
-  background:#4a0d1f;
-}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(26,2,10,0.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:11px}
+.logo svg{width:36px;height:36px}
+.logo-text strong{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;color:var(--accent);display:block;line-height:1.3}
+.logo-text span{font-size:11px;color:var(--muted)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--text);background:var(--border)}
+.btn-ingresar{background:var(--accent2)!important;color:white!important;padding:7px 16px!important;border-radius:8px!important;font-weight:600!important;border:none;cursor:pointer;transition:opacity .2s}
+.btn-ingresar:hover{opacity:.85}
+.btn-salir{background:rgba(248,113,113,0.1)!important;color:#f87171!important;border:1px solid rgba(248,113,113,0.25)!important;padding:7px 16px!important;border-radius:8px!important;font-size:13px!important;cursor:pointer}
 
-.logo{
-  color:#ff4d6d;
-  font-weight:bold;
-}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:999;display:none;justify-content:center;align-items:center}
+.overlay.show{display:flex;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:38px;width:350px;box-shadow:0 30px 80px rgba(0,0,0,0.7),var(--glow);animation:up .3s ease}
+@keyframes up{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+.modal h2{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin-bottom:5px}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:26px}
+.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;margin:-6px -6px 0 0}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase}
+.field input{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.field input:focus{border-color:var(--accent)}
+.btn-submit{width:100%;padding:12px;background:linear-gradient(135deg,#c0152f,#7b0d1e);border:none;border-radius:10px;color:white;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .2s}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+#err{color:#f87171;font-size:11.5px;margin-top:9px;text-align:center;min-height:16px}
+.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:12px}
 
-.nav-links{
-  display:flex;
-  gap:25px;
-}
-
-.nav-links a{
-  color:#f8e1e7;
-  text-decoration:none;
-  cursor:pointer;
-}
-
-.nav-links a:hover{
-  color:#ff4d6d;
-}
-
-.nav-item{
-  position:relative;
-}
-
-/* DROPDOWN */
-.dropdown{
-  display:none;
-  position:absolute;
-  top:40px;
-  left:0;
-  background:#2a0612;
-  border-radius:10px;
-  padding:10px;
-  min-width:160px;
-}
-
-.dropdown a{
-  display:block;
-  padding:10px;
-  color:#f8e1e7;
-  text-decoration:none;
-  border-radius:8px;
-}
-
-.dropdown a:hover{
-  background:#5a1025;
-  color:#ff4d6d;
-}
+/* MAIN */
+.main{position:relative;z-index:1;padding-top:66px}
 
 /* HERO */
-.hero{
-  height:70vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 15px;border-radius:999px;border:1px solid rgba(255,77,109,0.3);background:rgba(255,77,109,0.07);color:var(--accent);font-size:11.5px;font-weight:500;letter-spacing:.4px;margin-bottom:26px;animation:fd .6s ease both}
+.hero-name{font-family:'Syne',sans-serif;font-size:clamp(12px,1.8vw,15px);font-weight:600;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;animation:fd .6s .1s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(42px,7vw,88px);font-weight:800;line-height:1.0;margin-bottom:10px;animation:fd .6s .2s ease both}
+.hl{background:linear-gradient(90deg,#ff4d6d,#ff9aa2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(14px,1.8vw,17px);color:var(--muted);max-width:500px;line-height:1.75;margin-bottom:38px;animation:fd .6s .3s ease both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fd .6s .4s ease both}
+.btn-p{padding:13px 26px;background:var(--accent);color:#080b14;font-weight:700;font-size:13.5px;border-radius:11px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 28px rgba(0,229,255,0.28)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(0,229,255,0.48)}
+.btn-s{padding:13px 26px;background:transparent;color:var(--text);font-weight:600;font-size:13.5px;border-radius:11px;border:1px solid var(--border);cursor:pointer;transition:background .2s,transform .2s}
+.btn-s:hover{background:var(--bg2);transform:translateY(-2px)}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:46px;animation:fd .6s .5s ease both}
+.tag{padding:5px 13px;border-radius:999px;border:1px solid var(--border);font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+@keyframes fd{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
 
-.hero h1{
-  font-size:40px;
-  color:#ff4d6d;
-}
+/* SECTIONS */
+section{padding:90px 40px;max-width:1180px;margin:0 auto}
+.slabel{font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.stitle{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:800;line-height:1.15;margin-bottom:14px}
+.sdesc{font-size:14.5px;color:var(--muted);max-width:480px;line-height:1.75;margin-bottom:44px}
 
-.hero p{
-  color:#f3c4cf;
-}
+/* UNITS GRID */
+.units-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px}
+.unit-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:26px;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.unit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0}
+.unit-card:nth-child(1)::before{background:linear-gradient(90deg,#ff4d6d,#ff9aa2)}
+.unit-card:nth-child(2)::before{background:linear-gradient(90deg,#c0152f,#ff4d6d)}
+.unit-card:nth-child(3)::before{background:linear-gradient(90deg,#f59e0b,#ef4444)}
+.unit-card:nth-child(4)::before{background:linear-gradient(90deg,#7b0d1e,#c0152f)}
+.unit-card:hover{transform:translateY(-6px);border-color:rgba(0,229,255,0.2);box-shadow:0 20px 55px rgba(0,0,0,0.4),var(--glow)}
+.unum{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;line-height:1;margin-bottom:14px}
+.unit-card:nth-child(1) .unum{color:rgba(255,77,109,0.15)}
+.unit-card:nth-child(2) .unum{color:rgba(192,21,47,0.2)}
+.unit-card:nth-child(3) .unum{color:rgba(245,158,11,0.18)}
+.unit-card:nth-child(4) .unum{color:rgba(123,13,30,0.22)}
+.ubadge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:600;margin-bottom:10px}
+.unit-card:nth-child(1) .ubadge{background:rgba(255,77,109,0.12);color:var(--accent)}
+.unit-card:nth-child(2) .ubadge{background:rgba(192,21,47,0.15);color:#ff7f8f}
+.unit-card:nth-child(3) .ubadge{background:rgba(245,158,11,0.1);color:var(--accent3)}
+.unit-card:nth-child(4) .ubadge{background:rgba(255,77,109,0.1);color:#ff9aaa}
+.unit-card h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:7px}
+.unit-card p{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:18px}
+.ulink{font-size:12.5px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:5px;transition:gap .2s}
+.unit-card:hover .ulink{gap:9px}
+.unit-card:nth-child(2) .ulink{color:#ff7f8f}
+.unit-card:nth-child(3) .ulink{color:var(--accent3)}
+.unit-card:nth-child(4) .ulink{color:#ff9aaa}
+
+/* PERFIL */
+.perfil-wrap{display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap}
+.photo-box{width:200px;height:200px;border-radius:22px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:60px;flex-shrink:0}
+.perfil-info h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:5px}
+.perfil-info .role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:15px}
+.ptags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.ptag{padding:4px 11px;border:1px solid var(--border);border-radius:7px;font-size:11.5px;color:var(--muted)}
+.perfil-info .bio{font-size:13.5px;color:var(--muted);line-height:1.75;max-width:460px}
+.perfil-info .docente{margin-top:14px;font-size:12.5px;color:var(--muted)}
+.perfil-info .docente strong{color:var(--text)}
+
+/* SEMANAS PANEL */
+.back-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;cursor:pointer;transition:color .2s;margin-bottom:28px;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{color:var(--text)}
+.panel-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:28px}
+.semanas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.s-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;transition:border-color .2s,transform .2s}
+.s-card:hover{border-color:rgba(0,229,255,0.18);transform:translateY(-3px)}
+.s-card h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:5px}
+.s-card .s-sub{font-size:12px;color:var(--accent);font-weight:500;margin-bottom:6px}
+.s-card .s-desc{font-size:11.5px;color:var(--muted);margin-bottom:15px;line-height:1.55}
+.s-card a{font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid rgba(255,77,109,0.2);border-radius:7px;transition:background .2s}
+.s-card a:hover{background:rgba(255,77,109,0.07)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 36px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted);position:relative;z-index:1;flex-wrap:wrap;gap:8px}
 </style>
 </head>
-
 <body>
 
-<!-- LOGIN -->
-<<div class="login" id="login">
-  <div class="login-box">
-    <h2>Bienvenido</h2>
-    <p class="sub">Accede a tu portafolio</p>
+<canvas id="stars"></canvas>
 
-    <input type="text" id="user" placeholder="👤 Usuario">
-    <input type="password" id="pass" placeholder="🔒 Contraseña">
-
-    <button onclick="login()">Ingresar</button>
-
-    <p id="error"></p>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    <!-- 🖼️ LOGO UPLA — pon aquí la ruta de tu imagen.
+         Si está en la misma carpeta: src="upla.png"
+         Si está en subcarpeta:       src="imagenes/upla.png"  -->
+    <img src="imagenes/upla.png" alt="UPLA" style="width:42px;height:42px;object-fit:contain">
+    <div class="logo-text">
+      <!-- ✏️ Cambia el texto del navbar aquí -->
+      <strong>UPLA</strong>
+      <span>Portafolio · Base de Datos II</span>
+    </div>
   </div>
-</div>
-
-<!-- CONTENIDO -->
-<div id="contenido" style="display:none;">
-<div class="navbar">
-  <div class="logo">&lt;/&gt; Portafolio</div>
-
   <div class="nav-links">
-    <a onclick="logout()">Cerrar sesión</a>
-    <a href="#">Inicio</a>
-    
-    <!-- UNIDAD 1 -->
-    <div class="nav-item">
-      <a onclick="toggleMenu('m1')">Unidad 1 ▼</a>
-      <div class="dropdown" id="m1">
-        <a href="u1s1.html">Semana 1</a>
-        <a href="u1s2.html">Semana 2</a>
-        <a href="u1s3.html">Semana 3</a>
-        <a href="u1s4.html">Semana 4</a>
-      </div>
-    </div>
+    <a onclick="goHero()">Inicio</a>
+    <a onclick="goPerfil()">Perfil</a>
+    <a onclick="goUnit(1)">Unidad I</a>
+    <a onclick="goUnit(2)">Unidad II</a>
+    <a onclick="goUnit(3)">Unidad III</a>
+    <a onclick="goUnit(4)">Unidad IV</a>
+    <button class="btn-ingresar" id="btnIn" onclick="openLogin()">⚡ Ingresar</button>
+    <button class="btn-salir" id="btnOut" style="display:none" onclick="logout()">Salir</button>
+  </div>
+</nav>
 
-    <!-- UNIDAD 2 -->
-    <div class="nav-item">
-      <a onclick="toggleMenu('m2')">Unidad 2 ▼</a>
-      <div class="dropdown" id="m2">
-        <a href="u2s1.html">Semana 1</a>
-        <a href="u2s2.html">Semana 2</a>
-        <a href="u2s3.html">Semana 3</a>
-        <a href="u2s4.html">Semana 4</a>
-      </div>
-    </div>
-
-    <!-- UNIDAD 3 -->
-    <div class="nav-item">
-      <a onclick="toggleMenu('m3')">Unidad 3 ▼</a>
-      <div class="dropdown" id="m3">
-        <a href="u3s1.html">Semana 1</a>
-        <a href="u3s2.html">Semana 2</a>
-        <a href="u3s3.html">Semana 3</a>
-        <a href="u3s4.html">Semana 4</a>
-      </div>
-    </div>
-
-    <!-- UNIDAD 4 -->
-    <div class="nav-item">
-      <a onclick="toggleMenu('m4')">Unidad 4 ▼</a>
-      <div class="dropdown" id="m4">
-        <a href="u4s1.html">Semana 1</a>
-        <a href="u4s2.html">Semana 2</a>
-        <a href="u4s3.html">Semana 3</a>
-        <a href="u4s4.html">Semana 4</a>
-      </div>
-    </div>
-
+<!-- LOGIN MODAL -->
+<div class="overlay" id="loginOverlay" onclick="closeIfBg(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLogin()">×</button>
+    <h2>Acceso al Portal</h2>
+    <p class="sub">Ingresa tus credenciales para acceder al portafolio</p>
+    <div class="field"><label>Usuario</label><input type="text" id="user" placeholder="Ingresa tu usuario" autocomplete="off"></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="pass" placeholder="••••••••"></div>
+    <button class="btn-submit" onclick="doLogin()">Iniciar Sesión</button>
+    <p id="err"></p>
+    <p class="hint">Demo: usuario <strong>admin</strong> · contraseña <strong>1234</strong></p>
   </div>
 </div>
 
-<div class="hero">
+<!-- MAIN -->
+<div class="main">
 
-  <img src="imagenes/upla.png" width= "200">
-
-  <h1>Portafolio Académico</h1>
-  
-  <p class="desc">
-    Soy estudiante de Ingeniería de Sistemas en la UPLA.  
-    En este portafolio presento mis trabajos organizados por unidades y semanas, 
-    desarrollados durante el curso de Base de Datos II.
-  </p>
-
-  <div class="info">
-    <div class="box">
-      <h3>📘 Curso</h3>
-      <p>Base de Datos II</p>
+  <!-- HERO -->
+  <div id="secHero">
+    <div class="hero">
+      <div class="badge">🎓 Ciclo Académico 2026 · UPLA</div>
+      <!-- ✏️ TU NOMBRE — cámbialo aquí -->
+      <p class="hero-name">Michael Axel Vilcapoma Ochoa</p>
+      <!-- ✏️ TÍTULO PRINCIPAL -->
+      <h1>Portafolio<br><span class="hl">Base de Datos II</span></h1>
+      <!-- ✏️ DESCRIPCIÓN DEL HERO -->
+      <p class="hero-sub">Plataforma académica de la carrera de Ingeniería de Sistemas y Computación. Accede al material de cada semana y descarga los recursos.</p>
+      <div class="hero-btns">
+        <button class="btn-p" onclick="document.getElementById('unidadesSection').scrollIntoView({behavior:'smooth'})">Explorar Unidades →</button>
+        <button class="btn-s" onclick="openLogin()">⚡ Ingresar al Portal</button>
+      </div>
+      <div class="hero-tags">
+        <div class="tag"><span class="dot"></span>4 Unidades</div>
+        <div class="tag"><span class="dot" style="background:#c0152f"></span>16 Semanas</div>
+        <div class="tag"><span class="dot" style="background:#f59e0b"></span>Huancayo · Perú</div>
+        <div class="tag"><span class="dot" style="background:#ff9aa2"></span>2026</div>
+      </div>
     </div>
 
-    <div class="box">
-      <h3>🏫 Universidad</h3>
-      <p>Universidad Peruana Los Andes</p>
-    </div>
-
-    <div class="box">
-      <h3>💻 Área</h3>
-      <p>Ingeniería de Sistemas</p>
-    </div>
+    <section id="unidadesSection">
+      <div class="slabel">Contenido del Curso</div>
+      <h2 class="stitle">Unidades del Curso</h2>
+      <p class="sdesc">Explora las 4 unidades del ciclo. Cada una contiene 4 semanas de material académico.</p>
+      <div class="units-grid">
+        <div class="unit-card" onclick="goUnit(1)">
+          <div class="unum">I</div>
+          <div class="ubadge">4 semanas</div>
+          <h3>Introducción a Bases de Datos</h3>
+          <p>Fundamentos, modelo relacional, SQL básico y DDL.</p>
+          <span class="ulink">Ver material →</span>
+        </div>
+        <div class="unit-card" onclick="goUnit(2)">
+          <div class="unum">II</div>
+          <div class="ubadge">4 semanas</div>
+          <h3>Diseño y Normalización</h3>
+          <p>Modelado ER, formas normales e integridad referencial.</p>
+          <span class="ulink">Ver material →</span>
+        </div>
+        <div class="unit-card" onclick="goUnit(3)">
+          <div class="unum">III</div>
+          <div class="ubadge">4 semanas</div>
+          <h3>SQL Avanzado</h3>
+          <p>Procedimientos, vistas, triggers y optimización.</p>
+          <span class="ulink">Ver material →</span>
+        </div>
+        <div class="unit-card" onclick="goUnit(4)">
+          <div class="unum">IV</div>
+          <div class="ubadge">4 semanas</div>
+          <h3>Bases de Datos NoSQL</h3>
+          <p>MongoDB, Redis, comparativas y casos de uso reales.</p>
+          <span class="ulink">Ver material →</span>
+        </div>
+      </div>
+    </section>
   </div>
 
+  <!-- PERFIL -->
+  <section id="secPerfil" style="display:none">
+    <div class="slabel">Sobre mí</div>
+    <h2 class="stitle">Perfil del Estudiante</h2>
+    <div class="perfil-wrap">
+      <div class="photo-box">👨‍💻</div>
+      <div class="perfil-info">
+        <h2>Michael Axel Vilcapoma Ochoa</h2>
+        <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
+        <div class="ptags">
+          <span class="ptag">Ciclo V</span>
+          <span class="ptag">Sección B-1</span>
+          <span class="ptag">Base de Datos II</span>
+          <span class="ptag">Huancayo, Perú</span>
+          <span class="ptag">2026</span>
+        </div>
+        <p class="bio">Estudiante de Ingeniería de Sistemas y Computación en la Universidad Peruana Los Andes. Este portafolio recopila los trabajos académicos del curso Base de Datos II, demostrando dominio progresivo de conceptos como SQL, normalización, procedimientos almacenados y tecnologías NoSQL.</p>
+        <p class="docente">Docente: <strong>Raul Fernandez Bejarano</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEMANAS -->
+  <section id="secSemanas" style="display:none">
+    <button class="back-btn" onclick="goHero()">← Volver al inicio</button>
+    <h2 class="panel-title" id="panelTitle"></h2>
+    <div class="semanas-grid" id="semanasGrid"></div>
+  </section>
+
 </div>
+
+<footer>
+  <span>© 2026 Michael Axel Vilcapoma Ochoa · UPLA</span>
+  <span>Base de Datos II · Ingeniería de Sistemas y Computación</span>
+</footer>
 
 <script>
+/* STARS */
+const cv=document.getElementById('stars'),cx=cv.getContext('2d');let W,H,st=[];
+function initSt(){W=cv.width=innerWidth;H=cv.height=innerHeight;st=Array.from({length:130},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.2,a:Math.random(),s:(Math.random()-.5)*.003}))}
+function drawSt(){cx.clearRect(0,0,W,H);st.forEach(s=>{s.a+=s.s;if(s.a<=0||s.a>=1)s.s*=-1;cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(248,180,190,${s.a*.5})`;cx.fill()});requestAnimationFrame(drawSt)}
+initSt();drawSt();addEventListener('resize',initSt);
 
-function login(){
- let u=document.getElementById('user').value;
- let p=document.getElementById('pass').value;
+/* DATA */
+const D={
+  1:{title:'Unidad I — Introducción a Bases de Datos',semanas:[
+    {n:1,t:'Fundamentos de BD',d:'Conceptos básicos, tipos de bases de datos y SGBD.',pdf:'pdf/trabajo1.pdf'},  /* ← pon aquí el nombre exacto de tu PDF */
+    {n:2,t:'Modelo Relacional',d:'Tablas, tuplas, atributos y relaciones.',pdf:'pdf/unidad1_semna2_1.pdf'},               /* ← cambia u1s2.pdf por el nombre real */
+    {n:3,t:'SQL Básico',d:'SELECT, INSERT, UPDATE, DELETE.',pdf:'pdf/u1s3.pdf'},
+    {n:4,t:'DDL y Constraints',d:'CREATE TABLE, ALTER, PRIMARY KEY, FOREIGN KEY.',pdf:'pdf/u1s4.pdf'},
+  ]},
+  2:{title:'Unidad II — Diseño y Normalización',semanas:[
+    {n:1,t:'Modelo Entidad-Relación',d:'Diagrama ER, entidades, relaciones y cardinalidad.',pdf:'pdf/u2s1.pdf'},
+    {n:2,t:'Primera y Segunda Forma Normal',d:'1FN, 2FN y dependencias funcionales.',pdf:'pdf/u2s2.pdf'},
+    {n:3,t:'Tercera Forma Normal',d:'3FN, FNBC y eliminación de redundancias.',pdf:'pdf/u2s3.pdf'},
+    {n:4,t:'Integridad Referencial',d:'Claves foráneas, ON DELETE, ON UPDATE.',pdf:'pdf/u2s4.pdf'},
+  ]},
+  3:{title:'Unidad III — SQL Avanzado',semanas:[
+    {n:1,t:'Funciones y Agregados',d:'GROUP BY, HAVING, funciones de agregado.',pdf:'pdf/u3s1.pdf'},
+    {n:2,t:'Vistas y Subconsultas',d:'CREATE VIEW, subconsultas correlacionadas.',pdf:'pdf/u3s2.pdf'},
+    {n:3,t:'Procedimientos y Funciones',d:'Stored Procedures y funciones almacenadas.',pdf:'pdf/u3s3.pdf'},
+    {n:4,t:'Triggers y Optimización',d:'Disparadores y estrategias de indexación.',pdf:'pdf/u3s4.pdf'},
+  ]},
+  4:{title:'Unidad IV — Bases de Datos NoSQL',semanas:[
+    {n:1,t:'Introducción a NoSQL',d:'Tipos: documental, clave-valor, grafos, columnar.',pdf:'pdf/u4s1.pdf'},
+    {n:2,t:'MongoDB',d:'Colecciones, documentos BSON, consultas básicas.',pdf:'pdf/u4s2.pdf'},
+    {n:3,t:'Redis y Caché',d:'Estructuras en memoria, TTL y pub/sub.',pdf:'pdf/u4s3.pdf'},
+    {n:4,t:'Comparativa SQL vs NoSQL',d:'Casos de uso, ventajas, desventajas y proyectos.',pdf:'pdf/u4s4.pdf'},
+  ]},
+};
 
- if(u==='admin' && p==='1234'){
-   localStorage.setItem("sesion","activa"); // 🔥 guarda sesión
-   document.getElementById('login').style.display='none';
-   document.getElementById('contenido').style.display='block';
- }else{
-   document.getElementById('error').innerText='Datos incorrectos';
- }
-}
+/* AUTH */
+let pendingUnit=null;
+function openLogin(){document.getElementById('loginOverlay').classList.add('show')}
+function closeLogin(){document.getElementById('loginOverlay').classList.remove('show')}
+function closeIfBg(e){if(e.target===document.getElementById('loginOverlay'))closeLogin()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
+['user','pass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
 
-// 🔥 verificar sesión automáticamente
-window.onload = function(){
-  if(localStorage.getItem("sesion") === "activa"){
-    document.getElementById('login').style.display='none';
-    document.getElementById('contenido').style.display='block';
+function doLogin(){
+  const u=document.getElementById('user').value;
+  const p=document.getElementById('pass').value;
+  if(u==='admin'&&p==='1234'){   /* 🔐 Cambia 'admin' y '1234' por tu usuario y contraseña */
+    localStorage.setItem('sesion','activa');
+    closeLogin();
+    syncNav();
+    document.getElementById('err').textContent='';
+    if(pendingUnit){showUnit(pendingUnit);pendingUnit=null}
+  }else{
+    document.getElementById('err').textContent='Usuario o contraseña incorrectos';
   }
 }
 
-// 🔥 cerrar sesión
-function logout(){
-  localStorage.removeItem("sesion");
-  location.reload();
+function logout(){localStorage.removeItem('sesion');syncNav();goHero()}
+function loggedIn(){return!!localStorage.getItem('sesion')}
+
+function syncNav(){
+  document.getElementById('btnIn').style.display=loggedIn()?'none':'';
+  document.getElementById('btnOut').style.display=loggedIn()?'':'none';
 }
 
-// MENÚ CLICK
-function toggleMenu(id){
-  let menu = document.getElementById(id);
-
-  document.querySelectorAll('.dropdown').forEach(m=>{
-    if(m.id !== id){
-      m.style.display = 'none';
-    }
-  });
-
-  menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+/* NAV */
+function show(id){['secHero','secPerfil','secSemanas'].forEach(s=>document.getElementById(s).style.display=s===id?'block':'none')}
+function goHero(){show('secHero');window.scrollTo({top:0,behavior:'smooth'})}
+function goPerfil(){show('secPerfil');window.scrollTo({top:0,behavior:'smooth'})}
+function goUnit(n){
+  showUnit(n);  /* Cualquier visitante puede ver las unidades sin login */
 }
 
-// CERRAR SI HACES CLICK FUERA
-document.addEventListener('click', function(e){
-  if(!e.target.closest('.nav-item')){
-    document.querySelectorAll('.dropdown').forEach(m=>{
-      m.style.display='none';
-    });
-  }
-});
+function showUnit(n){
+  show('secSemanas');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const data=D[n];
+  const nums=['I','II','III','IV'];
+  document.getElementById('panelTitle').textContent=data.title;
+  document.getElementById('semanasGrid').innerHTML=data.semanas.map(s=>`
+    <div class="s-card">
+      <h4>Semana ${s.n}</h4>
+      <p class="s-sub">${s.t}</p>
+      <p class="s-desc">${s.d}</p>
+      <a href="${s.pdf}" target="_blank">📄 Ver PDF</a>
+    </div>
+  `).join('');
+}
 
+window.onload=syncNav;
 </script>
-
 </body>
 </html>
