@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -6,157 +6,437 @@
 <title>Portafolio · Base de Datos II · UPLA</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  /* ══════════════════════════════════════════════
-     🎨 COLORES — modifica aquí para cambiar todo
-     ══════════════════════════════════════════════
-     --bg        : fondo principal (muy oscuro)
-     --bg2       : fondo de tarjetas
-     --bg3       : fondo de inputs
-     --accent    : color principal (guinda claro)
-     --accent2   : color del botón Ingresar
-     --accent3   : color dorado / terciario
-     --text      : texto principal
-     --muted     : texto secundario / gris
-     --border    : color de bordes
-     --glow      : sombra de brillo
-  */
-  --bg:#1a020a; --bg2:#2a0612; --bg3:#3b0a1a;
-  --accent:#ff4d6d; --accent2:#c0152f; --accent3:#f59e0b;
-  --text:#fff0f3; --muted:#d4a0aa; --border:rgba(255,77,109,0.12);
-  --glow:0 0 40px rgba(255,77,109,0.15);
+/* ═══════════════════════════════════════════════════
+   🎨 VARIABLES — edita aquí para cambiar colores
+═══════════════════════════════════════════════════ */
+:root{
+  --bg:#1a020a;
+  --bg2:#2a0612;
+  --bg3:#3b0a1a;
+  --accent:#ff4d6d;
+  --accent2:#c0152f;
+  --accent3:#f59e0b;
+  --text:#fff0f3;
+  --muted:#d4a0aa;
+  --border:rgba(255,77,109,0.15);
+  --glow:0 0 40px rgba(255,77,109,0.2);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
 
-#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* ── CANVAS ── */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* NAVBAR */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(26,2,10,0.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:11px}
-.logo svg{width:36px;height:36px}
+/* ── CURSOR GLOW ── */
+.cursor-glow{
+  position:fixed;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,77,109,0.06) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  transform:translate(-50%,-50%);transition:opacity .3s;
+}
+
+/* ══ NAVBAR ══ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 36px;
+  background:rgba(26,2,10,0.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .3s;
+}
+.navbar.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.5)}
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+.logo img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,77,109,0.4))}
 .logo-text strong{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;color:var(--accent);display:block;line-height:1.3}
 .logo-text span{font-size:11px;color:var(--muted)}
 .nav-links{display:flex;gap:4px;align-items:center}
-.nav-links a{text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer;transition:color .2s,background .2s}
-.nav-links a:hover{color:var(--text);background:var(--border)}
-.btn-ingresar{background:var(--accent2)!important;color:white!important;padding:7px 16px!important;border-radius:8px!important;font-weight:600!important;border:none;cursor:pointer;transition:opacity .2s}
-.btn-ingresar:hover{opacity:.85}
-.btn-salir{background:rgba(248,113,113,0.1)!important;color:#f87171!important;border:1px solid rgba(248,113,113,0.25)!important;padding:7px 16px!important;border-radius:8px!important;font-size:13px!important;cursor:pointer}
+.nav-links a{
+  text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);
+  padding:6px 12px;border-radius:8px;cursor:pointer;
+  transition:color .2s,background .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:2px;left:50%;right:50%;
+  height:2px;background:var(--accent);border-radius:2px;
+  transition:left .25s,right .25s;
+}
+.nav-links a:hover::after{left:12px;right:12px}
+.nav-links a:hover{color:var(--text)}
+.btn-nav{
+  padding:7px 16px;border-radius:8px;font-weight:600;font-size:13px;
+  border:none;cursor:pointer;transition:transform .2s,opacity .2s;
+}
+.btn-nav:hover{transform:translateY(-1px);opacity:.9}
+.btn-ingresar{background:var(--accent2);color:white}
+.btn-salir{background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.25)!important}
 
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:999;display:none;justify-content:center;align-items:center}
-.overlay.show{display:flex;animation:fadeIn .2s}
+/* ══ MODAL ══ */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(12px);z-index:999;
+  display:none;justify-content:center;align-items:center;
+}
+.overlay.show{display:flex;animation:fadeIn .25s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:38px;width:350px;box-shadow:0 30px 80px rgba(0,0,0,0.7),var(--glow);animation:up .3s ease}
-@keyframes up{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
-.modal h2{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin-bottom:5px}
-.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:26px}
-.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;margin:-6px -6px 0 0}
-.field{margin-bottom:15px}
-.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase}
-.field input{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.field input:focus{border-color:var(--accent)}
-.btn-submit{width:100%;padding:12px;background:linear-gradient(135deg,#c0152f,#7b0d1e);border:none;border-radius:10px;color:white;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .2s}
-.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
-#err{color:#f87171;font-size:11.5px;margin-top:9px;text-align:center;min-height:16px}
-.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:12px}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:22px;padding:40px;width:360px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.7),var(--glow);
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slideUp{from{transform:translateY(30px) scale(.95);opacity:0}to{transform:none;opacity:1}}
+.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;margin:-4px -4px 0 0;transition:color .2s}
+.modal-close:hover{color:var(--text)}
+.modal h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase}
+.field input{
+  width:100%;padding:12px 15px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:11px;
+  color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;
+  outline:none;transition:border-color .25s,box-shadow .25s;
+}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,109,0.12)}
+.btn-submit{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,#c0152f,#7b0d1e);
+  border:none;border-radius:11px;color:white;
+  font-size:15px;font-weight:600;cursor:pointer;margin-top:10px;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(192,21,47,0.4);
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,21,47,0.5)}
+#err{color:#f87171;font-size:11.5px;margin-top:10px;text-align:center;min-height:16px}
+.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:14px}
 
-/* MAIN */
+/* ══ MAIN ══ */
 .main{position:relative;z-index:1;padding-top:66px}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 15px;border-radius:999px;border:1px solid rgba(255,77,109,0.3);background:rgba(255,77,109,0.07);color:var(--accent);font-size:11.5px;font-weight:500;letter-spacing:.4px;margin-bottom:26px;animation:fd .6s ease both}
-.hero-name{font-family:'Syne',sans-serif;font-size:clamp(12px,1.8vw,15px);font-weight:600;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;animation:fd .6s .1s ease both}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(42px,7vw,88px);font-weight:800;line-height:1.0;margin-bottom:10px;animation:fd .6s .2s ease both}
-.hl{background:linear-gradient(90deg,#ff4d6d,#ff9aa2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(14px,1.8vw,17px);color:var(--muted);max-width:500px;line-height:1.75;margin-bottom:38px;animation:fd .6s .3s ease both}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fd .6s .4s ease both}
-.btn-p{padding:13px 26px;background:var(--accent);color:#080b14;font-weight:700;font-size:13.5px;border-radius:11px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 28px rgba(0,229,255,0.28)}
-.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(0,229,255,0.48)}
-.btn-s{padding:13px 26px;background:transparent;color:var(--text);font-weight:600;font-size:13.5px;border-radius:11px;border:1px solid var(--border);cursor:pointer;transition:background .2s,transform .2s}
-.btn-s:hover{background:var(--bg2);transform:translateY(-2px)}
-.hero-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:46px;animation:fd .6s .5s ease both}
-.tag{padding:5px 13px;border-radius:999px;border:1px solid var(--border);font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-@keyframes fd{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;padding:80px 24px 60px;
+  position:relative;
+}
 
-/* SECTIONS */
-section{padding:90px 40px;max-width:1180px;margin:0 auto}
-.slabel{font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.stitle{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:800;line-height:1.15;margin-bottom:14px}
-.sdesc{font-size:14.5px;color:var(--muted);max-width:480px;line-height:1.75;margin-bottom:44px}
+/* línea de partículas decorativas */
+.hero-line{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,77,109,0.04) 0%,transparent 65%);
+  pointer-events:none;animation:pulse 4s ease-in-out infinite;
+}
+.hero-line2{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:900px;border-radius:50%;
+  border:1px solid rgba(255,77,109,0.05);
+  pointer-events:none;animation:pulse 6s ease-in-out infinite reverse;
+}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.05);opacity:1}}
 
-/* UNITS GRID */
-.units-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px}
-.unit-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:26px;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
-.unit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:999px;
+  border:1px solid rgba(255,77,109,0.3);
+  background:rgba(255,77,109,0.07);
+  color:var(--accent);font-size:11.5px;font-weight:500;
+  letter-spacing:.4px;margin-bottom:28px;
+  animation:fadeDown .7s ease both;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-name{
+  font-family:'Syne',sans-serif;font-size:clamp(11px,1.6vw,14px);
+  font-weight:600;color:var(--muted);letter-spacing:4px;
+  text-transform:uppercase;margin-bottom:16px;
+  animation:fadeDown .7s .1s ease both;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(44px,7.5vw,96px);
+  font-weight:800;line-height:.95;margin-bottom:12px;
+  animation:fadeDown .7s .2s ease both;
+}
+.hl{
+  background:linear-gradient(90deg,#ff4d6d,#ffb3c1,#ff4d6d);
+  background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 4s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+.hero-sub{
+  font-size:clamp(14px,1.8vw,17px);color:var(--muted);
+  max-width:520px;line-height:1.8;margin-bottom:40px;
+  animation:fadeDown .7s .3s ease both;
+}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeDown .7s .4s ease both}
+.btn-p{
+  padding:14px 28px;background:var(--accent);color:#1a020a;
+  font-weight:700;font-size:14px;border-radius:12px;border:none;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 30px rgba(255,77,109,0.35);
+}
+.btn-p::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.15) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.btn-p:hover::after{transform:translateX(100%)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 0 55px rgba(255,77,109,0.55)}
+.btn-s{
+  padding:14px 28px;background:transparent;color:var(--text);
+  font-weight:600;font-size:14px;border-radius:12px;
+  border:1px solid rgba(255,77,109,0.25);cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.btn-s:hover{background:var(--bg2);border-color:var(--accent);transform:translateY(-3px)}
+
+.hero-tags{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  margin-top:50px;animation:fadeDown .7s .5s ease both;
+}
+.tag{
+  padding:6px 14px;border-radius:999px;border:1px solid var(--border);
+  font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:7px;
+  transition:border-color .2s,color .2s;cursor:default;
+}
+.tag:hover{border-color:rgba(255,77,109,0.35);color:var(--text)}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+
+/* ══ SCROLL REVEAL ══ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+/* unit-cards siempre visibles — el reveal solo es para textos/stats */
+.unit-card{opacity:1!important;transform:none!important}
+
+/* ══ SECTION ══ */
+section{padding:100px 44px;max-width:1200px;margin:0 auto}
+.slabel{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.stitle{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;line-height:1.1;margin-bottom:16px}
+.sdesc{font-size:15px;color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:50px}
+
+/* ══ UNITS GRID ══ */
+.units-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.unit-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:28px;cursor:pointer;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+/* shimmer on hover */
+.unit-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,77,109,0.04) 60%,transparent 80%);
+  transform:translateX(-100%);transition:transform .6s;
+  pointer-events:none;
+}
+.unit-card:hover::after{transform:translateX(100%)}
+.unit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0}
 .unit-card:nth-child(1)::before{background:linear-gradient(90deg,#ff4d6d,#ff9aa2)}
 .unit-card:nth-child(2)::before{background:linear-gradient(90deg,#c0152f,#ff4d6d)}
 .unit-card:nth-child(3)::before{background:linear-gradient(90deg,#f59e0b,#ef4444)}
 .unit-card:nth-child(4)::before{background:linear-gradient(90deg,#7b0d1e,#c0152f)}
-.unit-card:hover{transform:translateY(-6px);border-color:rgba(0,229,255,0.2);box-shadow:0 20px 55px rgba(0,0,0,0.4),var(--glow)}
-.unum{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;line-height:1;margin-bottom:14px}
-.unit-card:nth-child(1) .unum{color:rgba(255,77,109,0.15)}
-.unit-card:nth-child(2) .unum{color:rgba(192,21,47,0.2)}
-.unit-card:nth-child(3) .unum{color:rgba(245,158,11,0.18)}
-.unit-card:nth-child(4) .unum{color:rgba(123,13,30,0.22)}
-.ubadge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:600;margin-bottom:10px}
-.unit-card:nth-child(1) .ubadge{background:rgba(255,77,109,0.12);color:var(--accent)}
-.unit-card:nth-child(2) .ubadge{background:rgba(192,21,47,0.15);color:#ff7f8f}
-.unit-card:nth-child(3) .ubadge{background:rgba(245,158,11,0.1);color:var(--accent3)}
-.unit-card:nth-child(4) .ubadge{background:rgba(255,77,109,0.1);color:#ff9aaa}
-.unit-card h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:7px}
-.unit-card p{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:18px}
-.ulink{font-size:12.5px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:5px;transition:gap .2s}
-.unit-card:hover .ulink{gap:9px}
-.unit-card:nth-child(2) .ulink{color:#ff7f8f}
-.unit-card:nth-child(3) .ulink{color:var(--accent3)}
+.unit-card:hover{
+  transform:translateY(-8px) scale(1.01);
+  box-shadow:0 24px 60px rgba(0,0,0,0.5),var(--glow);
+}
+.unit-card:nth-child(1):hover{border-color:rgba(255,77,109,0.35)}
+.unit-card:nth-child(2):hover{border-color:rgba(192,21,47,0.4)}
+.unit-card:nth-child(3):hover{border-color:rgba(245,158,11,0.35)}
+.unit-card:nth-child(4):hover{border-color:rgba(123,13,30,0.4)}
+
+.unum{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1;margin-bottom:16px}
+.unit-card:nth-child(1) .unum{color:rgba(255,77,109,0.13)}
+.unit-card:nth-child(2) .unum{color:rgba(192,21,47,0.18)}
+.unit-card:nth-child(3) .unum{color:rgba(245,158,11,0.16)}
+.unit-card:nth-child(4) .unum{color:rgba(123,13,30,0.2)}
+.ubadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:600;margin-bottom:12px}
+.unit-card:nth-child(1) .ubadge{background:rgba(255,77,109,0.1);color:#ff7f8f}
+.unit-card:nth-child(2) .ubadge{background:rgba(192,21,47,0.12);color:#ff6b6b}
+.unit-card:nth-child(3) .ubadge{background:rgba(245,158,11,0.1);color:#f59e0b}
+.unit-card:nth-child(4) .ubadge{background:rgba(255,77,109,0.08);color:#ff9aaa}
+.unit-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px}
+.unit-card .udesc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.ulink{font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px;transition:gap .25s}
+.unit-card:hover .ulink{gap:10px}
+.unit-card:nth-child(2) .ulink{color:#ff6b6b}
+.unit-card:nth-child(3) .ulink{color:#f59e0b}
 .unit-card:nth-child(4) .ulink{color:#ff9aaa}
 
-/* PERFIL */
-.perfil-wrap{display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap}
-.photo-box{width:200px;height:200px;border-radius:22px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:60px;flex-shrink:0}
-.perfil-info h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:5px}
-.perfil-info .role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:15px}
-.ptags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
-.ptag{padding:4px 11px;border:1px solid var(--border);border-radius:7px;font-size:11.5px;color:var(--muted)}
-.perfil-info .bio{font-size:13.5px;color:var(--muted);line-height:1.75;max-width:460px}
-.perfil-info .docente{margin-top:14px;font-size:12.5px;color:var(--muted)}
-.perfil-info .docente strong{color:var(--text)}
+/* semanas count pill */
+.u-weeks{display:flex;gap:4px;margin-bottom:18px}
+.wdot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.unit-card:nth-child(1) .wdot{background:rgba(255,77,109,0.3)}
+.unit-card:nth-child(2) .wdot{background:rgba(192,21,47,0.35)}
+.unit-card:nth-child(3) .wdot{background:rgba(245,158,11,0.3)}
+.unit-card:nth-child(4) .wdot{background:rgba(123,13,30,0.35)}
 
-/* SEMANAS PANEL */
-.back-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:8px;font-size:12.5px;cursor:pointer;transition:color .2s;margin-bottom:28px;display:inline-flex;align-items:center;gap:6px}
-.back-btn:hover{color:var(--text)}
-.panel-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:28px}
-.semanas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.s-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;transition:border-color .2s,transform .2s}
-.s-card:hover{border-color:rgba(0,229,255,0.18);transform:translateY(-3px)}
-.s-card h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:5px}
-.s-card .s-sub{font-size:12px;color:var(--accent);font-weight:500;margin-bottom:6px}
-.s-card .s-desc{font-size:11.5px;color:var(--muted);margin-bottom:15px;line-height:1.55}
-.s-card a{font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid rgba(255,77,109,0.2);border-radius:7px;transition:background .2s}
-.s-card a:hover{background:rgba(255,77,109,0.07)}
+/* ══ PERFIL ══ */
+.perfil-wrap{display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap}
+.photo-box{
+  width:210px;height:210px;border-radius:24px;
+  background:var(--bg2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:70px;flex-shrink:0;position:relative;overflow:hidden;
+}
+.photo-box::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,77,109,0.08),transparent);
+}
+.perfil-info h2{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:5px}
+.perfil-info .role{font-size:13.5px;color:var(--accent);font-weight:500;margin-bottom:18px}
+.ptags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ptag{
+  padding:5px 12px;border:1px solid var(--border);border-radius:8px;
+  font-size:11.5px;color:var(--muted);
+  transition:border-color .2s,color .2s;
+}
+.ptag:hover{border-color:rgba(255,77,109,0.3);color:var(--text)}
+.bio{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:460px}
+.docente{margin-top:16px;font-size:12.5px;color:var(--muted)}
+.docente strong{color:var(--text)}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:28px 36px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted);position:relative;z-index:1;flex-wrap:wrap;gap:8px}
+/* ══ SEMANAS SECTION ══ */
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--muted);padding:9px 16px;border-radius:10px;
+  font-size:13px;cursor:pointer;margin-bottom:10px;
+  transition:color .2s,border-color .2s,transform .2s;
+}
+.back-btn:hover{color:var(--text);border-color:rgba(255,77,109,0.3);transform:translateX(-3px)}
+
+.panel-header{margin-bottom:36px}
+.panel-unit-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.panel-title{font-family:'Syne',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;line-height:1.1}
+
+/* semanas grid — 2 columnas en desktop */
+.semanas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+
+/* ── tarjeta de semana ── */
+.s-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:18px;padding:0;overflow:hidden;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;
+}
+.s-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(255,77,109,0.3);
+  box-shadow:0 16px 50px rgba(0,0,0,0.4),var(--glow);
+}
+
+/* cabecera de semana */
+.s-header{
+  padding:20px 22px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.s-num{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  color:rgba(255,77,109,0.15);line-height:1;
+}
+.s-week-badge{
+  background:rgba(255,77,109,0.08);color:var(--accent);
+  padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+
+/* cuerpo */
+.s-body{padding:18px 22px}
+.s-title{
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  margin-bottom:5px;
+}
+.s-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+
+/* trabajos dentro de la semana */
+.trabajos{display:flex;flex-direction:column;gap:10px}
+.trabajo{
+  background:var(--bg3);border:1px solid rgba(255,77,109,0.08);
+  border-radius:12px;padding:13px 15px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transition:border-color .2s,background .2s;
+}
+.trabajo:hover{border-color:rgba(255,77,109,0.25);background:rgba(255,77,109,0.04)}
+.trabajo-info{}
+.trabajo-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.trabajo-meta{font-size:11px;color:var(--muted)}
+.btn-pdf{
+  flex-shrink:0;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 13px;
+  background:linear-gradient(135deg,rgba(192,21,47,0.7),rgba(123,13,30,0.7));
+  border:1px solid rgba(255,77,109,0.2);
+  border-radius:9px;color:white;font-size:11.5px;font-weight:600;
+  text-decoration:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;white-space:nowrap;
+}
+.btn-pdf:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(192,21,47,0.4)}
+
+/* ══ DIVISOR DECORATIVO ══ */
+.divider{
+  width:100%;max-width:1200px;margin:0 auto;
+  padding:0 44px;
+}
+.divider-line{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,77,109,0.2),transparent);
+}
+
+/* ══ STATS BAR ══ */
+.stats-bar{
+  display:flex;gap:0;flex-wrap:wrap;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;margin-bottom:0;
+}
+.stat-item{
+  flex:1;min-width:140px;padding:28px 24px;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background .2s;
+}
+.stat-item:last-child{border-right:none}
+.stat-item:hover{background:rgba(255,77,109,0.04)}
+.stat-num{
+  font-family:'Syne',sans-serif;font-size:36px;font-weight:800;
+  color:var(--accent);line-height:1;margin-bottom:6px;
+}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500}
+
+/* ══ FOOTER ══ */
+footer{
+  border-top:1px solid var(--border);padding:32px 44px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12.5px;color:var(--muted);
+  position:relative;z-index:1;flex-wrap:wrap;gap:10px;
+}
+footer .fl{display:flex;align-items:center;gap:10px}
+.footer-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,77,109,0.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,77,109,0.5)}
 </style>
 </head>
 <body>
 
 <canvas id="stars"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="logo">
-    <!-- 🖼️ LOGO UPLA — pon aquí la ruta de tu imagen.
-         Si está en la misma carpeta: src="upla.png"
-         Si está en subcarpeta:       src="imagenes/upla.png"  -->
-    <img src="imagenes/upla.png" alt="UPLA" style="width:42px;height:42px;object-fit:contain">
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar" id="navbar">
+  <div class="logo" onclick="goHero()">
+    <!-- 🖼️ LOGO: cambia src="imagenes/upla.png" por la ruta de tu imagen -->
+    <img src="imagenes/upla.png" alt="UPLA" onerror="this.style.display='none'">
     <div class="logo-text">
-      <!-- ✏️ Cambia el texto del navbar aquí -->
       <strong>UPLA</strong>
       <span>Portafolio · Base de Datos II</span>
     </div>
@@ -168,94 +448,119 @@ footer{border-top:1px solid var(--border);padding:28px 36px;display:flex;justify
     <a onclick="goUnit(2)">Unidad II</a>
     <a onclick="goUnit(3)">Unidad III</a>
     <a onclick="goUnit(4)">Unidad IV</a>
-    <button class="btn-ingresar" id="btnIn" onclick="openLogin()">⚡ Ingresar</button>
-    <button class="btn-salir" id="btnOut" style="display:none" onclick="logout()">Salir</button>
+    <button class="btn-nav btn-ingresar" id="btnIn" onclick="openLogin()">⚡ Ingresar</button>
+    <button class="btn-nav btn-salir" id="btnOut" style="display:none" onclick="logout()">Salir</button>
   </div>
 </nav>
 
-<!-- LOGIN MODAL -->
+<!-- ══ MODAL LOGIN ══ -->
 <div class="overlay" id="loginOverlay" onclick="closeIfBg(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeLogin()">×</button>
     <h2>Acceso al Portal</h2>
-    <p class="sub">Ingresa tus credenciales para acceder al portafolio</p>
+    <p class="sub">Solo para el administrador del portafolio</p>
     <div class="field"><label>Usuario</label><input type="text" id="user" placeholder="Ingresa tu usuario" autocomplete="off"></div>
     <div class="field"><label>Contraseña</label><input type="password" id="pass" placeholder="••••••••"></div>
     <button class="btn-submit" onclick="doLogin()">Iniciar Sesión</button>
     <p id="err"></p>
-    <p class="hint">Demo: usuario <strong>admin</strong> · contraseña <strong>1234</strong></p>
+    <p class="hint">Demo: <strong>admin</strong> / <strong>1234</strong></p>
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- ══ MAIN ══ -->
 <div class="main">
 
-  <!-- HERO -->
+  <!-- ── HERO ── -->
   <div id="secHero">
     <div class="hero">
-      <div class="badge">🎓 Ciclo Académico 2026 · UPLA</div>
-      <!-- ✏️ TU NOMBRE — cámbialo aquí -->
+      <div class="hero-line"></div>
+      <div class="hero-line2"></div>
+
+      <div class="badge"><span class="badge-dot"></span>🎓 Ciclo Académico 2026 · UPLA</div>
+      <!-- ✏️ TU NOMBRE -->
       <p class="hero-name">Michael Axel Vilcapoma Ochoa</p>
-      <!-- ✏️ TÍTULO PRINCIPAL -->
+      <!-- ✏️ TÍTULO -->
       <h1>Portafolio<br><span class="hl">Base de Datos II</span></h1>
-      <!-- ✏️ DESCRIPCIÓN DEL HERO -->
-      <p class="hero-sub">Plataforma académica de la carrera de Ingeniería de Sistemas y Computación. Accede al material de cada semana y descarga los recursos.</p>
+      <p class="hero-sub">Plataforma académica · Ingeniería de Sistemas y Computación. Explora el material de cada semana organizado por unidades.</p>
+
       <div class="hero-btns">
-        <button class="btn-p" onclick="document.getElementById('unidadesSection').scrollIntoView({behavior:'smooth'})">Explorar Unidades →</button>
-        <button class="btn-s" onclick="openLogin()">⚡ Ingresar al Portal</button>
+        <button class="btn-p" onclick="document.getElementById('statsBar').scrollIntoView({behavior:'smooth'})">Explorar Unidades →</button>
+        <button class="btn-s" onclick="goPerfil()">Ver Perfil</button>
       </div>
+
       <div class="hero-tags">
-        <div class="tag"><span class="dot"></span>4 Unidades</div>
+        <div class="tag"><span class="dot" style="background:#ff4d6d"></span>4 Unidades</div>
         <div class="tag"><span class="dot" style="background:#c0152f"></span>16 Semanas</div>
         <div class="tag"><span class="dot" style="background:#f59e0b"></span>Huancayo · Perú</div>
         <div class="tag"><span class="dot" style="background:#ff9aa2"></span>2026</div>
       </div>
     </div>
 
-    <section id="unidadesSection">
-      <div class="slabel">Contenido del Curso</div>
-      <h2 class="stitle">Unidades del Curso</h2>
-      <p class="sdesc">Explora las 4 unidades del ciclo. Cada una contiene 4 semanas de material académico.</p>
+    <!-- STATS -->
+    <div style="max-width:1200px;margin:0 auto;padding:0 44px 60px" id="statsBar">
+      <div class="stats-bar reveal">
+        <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Unidades</div></div>
+        <div class="stat-item"><div class="stat-num">16</div><div class="stat-label">Semanas</div></div>
+        <div class="stat-item"><div class="stat-num">V</div><div class="stat-label">Ciclo</div></div>
+        <div class="stat-item"><div class="stat-num">2026</div><div class="stat-label">Año académico</div></div>
+      </div>
+    </div>
+
+    <!-- UNIDADES -->
+    <section>
+      <div class="slabel reveal">Contenido del Curso</div>
+      <h2 class="stitle reveal">Unidades del Curso</h2>
+      <p class="sdesc reveal">4 unidades · 4 semanas cada una · material descargable en PDF.</p>
       <div class="units-grid">
-        <div class="unit-card" onclick="goUnit(1)">
+
+        <div class="unit-card" onclick="goUnit(1)" style="transition-delay:.05s">
           <div class="unum">I</div>
-          <div class="ubadge">4 semanas</div>
+          <div class="ubadge"><span>●</span>4 semanas</div>
+          <div class="u-weeks"><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span></div>
           <h3>Introducción a Bases de Datos</h3>
-          <p>Fundamentos, modelo relacional, SQL básico y DDL.</p>
-          <span class="ulink">Ver material →</span>
+          <p class="udesc">Fundamentos, modelo relacional, SQL básico y DDL.</p>
+          <span class="ulink">Ver semanas →</span>
         </div>
-        <div class="unit-card" onclick="goUnit(2)">
+
+        <div class="unit-card" onclick="goUnit(2)" style="transition-delay:.1s">
           <div class="unum">II</div>
-          <div class="ubadge">4 semanas</div>
+          <div class="ubadge"><span>●</span>4 semanas</div>
+          <div class="u-weeks"><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span></div>
           <h3>Diseño y Normalización</h3>
-          <p>Modelado ER, formas normales e integridad referencial.</p>
-          <span class="ulink">Ver material →</span>
+          <p class="udesc">Modelado ER, formas normales e integridad referencial.</p>
+          <span class="ulink">Ver semanas →</span>
         </div>
-        <div class="unit-card" onclick="goUnit(3)">
+
+        <div class="unit-card" onclick="goUnit(3)" style="transition-delay:.15s">
           <div class="unum">III</div>
-          <div class="ubadge">4 semanas</div>
+          <div class="ubadge"><span>●</span>4 semanas</div>
+          <div class="u-weeks"><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span></div>
           <h3>SQL Avanzado</h3>
-          <p>Procedimientos, vistas, triggers y optimización.</p>
-          <span class="ulink">Ver material →</span>
+          <p class="udesc">Procedimientos, vistas, triggers y optimización.</p>
+          <span class="ulink">Ver semanas →</span>
         </div>
-        <div class="unit-card" onclick="goUnit(4)">
+
+        <div class="unit-card" onclick="goUnit(4)" style="transition-delay:.2s">
           <div class="unum">IV</div>
-          <div class="ubadge">4 semanas</div>
+          <div class="ubadge"><span>●</span>4 semanas</div>
+          <div class="u-weeks"><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span><span class="wdot"></span></div>
           <h3>Bases de Datos NoSQL</h3>
-          <p>MongoDB, Redis, comparativas y casos de uso reales.</p>
-          <span class="ulink">Ver material →</span>
+          <p class="udesc">MongoDB, Redis, comparativas y casos de uso reales.</p>
+          <span class="ulink">Ver semanas →</span>
         </div>
+
       </div>
     </section>
   </div>
 
-  <!-- PERFIL -->
+  <!-- ── PERFIL ── -->
   <section id="secPerfil" style="display:none">
     <div class="slabel">Sobre mí</div>
     <h2 class="stitle">Perfil del Estudiante</h2>
     <div class="perfil-wrap">
       <div class="photo-box">👨‍💻</div>
       <div class="perfil-info">
+        <!-- ✏️ Cambia tu nombre, ciclo, sección, docente aquí -->
         <h2>Michael Axel Vilcapoma Ochoa</h2>
         <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
         <div class="ptags">
@@ -271,111 +576,313 @@ footer{border-top:1px solid var(--border);padding:28px 36px;display:flex;justify
     </div>
   </section>
 
-  <!-- SEMANAS -->
+  <!-- ── SEMANAS ── -->
   <section id="secSemanas" style="display:none">
-    <button class="back-btn" onclick="goHero()">← Volver al inicio</button>
-    <h2 class="panel-title" id="panelTitle"></h2>
+    <button class="back-btn" onclick="goHero()">← Volver</button>
+    <div class="panel-header">
+      <div class="panel-unit-label" id="panelLabel"></div>
+      <h2 class="panel-title" id="panelTitle"></h2>
+    </div>
     <div class="semanas-grid" id="semanasGrid"></div>
   </section>
 
 </div>
 
+<!-- ══ FOOTER ══ -->
 <footer>
-  <span>© 2026 Michael Axel Vilcapoma Ochoa · UPLA</span>
+  <div class="fl">
+    <span class="footer-dot"></span>
+    <!-- ✏️ Tu nombre en el footer -->
+    <span>© 2026 Michael Axel Vilcapoma Ochoa · UPLA</span>
+  </div>
   <span>Base de Datos II · Ingeniería de Sistemas y Computación</span>
 </footer>
 
 <script>
-/* STARS */
-const cv=document.getElementById('stars'),cx=cv.getContext('2d');let W,H,st=[];
-function initSt(){W=cv.width=innerWidth;H=cv.height=innerHeight;st=Array.from({length:130},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.2,a:Math.random(),s:(Math.random()-.5)*.003}))}
-function drawSt(){cx.clearRect(0,0,W,H);st.forEach(s=>{s.a+=s.s;if(s.a<=0||s.a>=1)s.s*=-1;cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(248,180,190,${s.a*.5})`;cx.fill()});requestAnimationFrame(drawSt)}
-initSt();drawSt();addEventListener('resize',initSt);
+/* ══════════════════════════════════════════════════
+   📋 DATOS — edita aquí tus semanas y PDFs
+   Cada semana puede tener varios "trabajos"
+   solo agrega más objetos dentro de "trabajos:[]"
+══════════════════════════════════════════════════ */
+const UNIDADES = {
 
-/* DATA */
-const D={
-  1:{title:'Unidad I — Introducción a Bases de Datos',semanas:[
-    {n:1,t:'Fundamentos de BD',d:'Conceptos básicos, tipos de bases de datos y SGBD.',pdf:'pdf/trabajo1.pdf'},  /* ← pon aquí el nombre exacto de tu PDF */
-    {n:2,t:'Modelo Relacional',d:'Tablas, tuplas, atributos y relaciones.',pdf:'pdf/unidad1_semna2_1.pdf'},               /* ← cambia u1s2.pdf por el nombre real */
-    {n:3,t:'SQL Básico',d:'SELECT, INSERT, UPDATE, DELETE.',pdf:'pdf/u1s3.pdf'},
-    {n:4,t:'DDL y Constraints',d:'CREATE TABLE, ALTER, PRIMARY KEY, FOREIGN KEY.',pdf:'pdf/u1s4.pdf'},
-  ]},
-  2:{title:'Unidad II — Diseño y Normalización',semanas:[
-    {n:1,t:'Modelo Entidad-Relación',d:'Diagrama ER, entidades, relaciones y cardinalidad.',pdf:'pdf/u2s1.pdf'},
-    {n:2,t:'Primera y Segunda Forma Normal',d:'1FN, 2FN y dependencias funcionales.',pdf:'pdf/u2s2.pdf'},
-    {n:3,t:'Tercera Forma Normal',d:'3FN, FNBC y eliminación de redundancias.',pdf:'pdf/u2s3.pdf'},
-    {n:4,t:'Integridad Referencial',d:'Claves foráneas, ON DELETE, ON UPDATE.',pdf:'pdf/u2s4.pdf'},
-  ]},
-  3:{title:'Unidad III — SQL Avanzado',semanas:[
-    {n:1,t:'Funciones y Agregados',d:'GROUP BY, HAVING, funciones de agregado.',pdf:'pdf/u3s1.pdf'},
-    {n:2,t:'Vistas y Subconsultas',d:'CREATE VIEW, subconsultas correlacionadas.',pdf:'pdf/u3s2.pdf'},
-    {n:3,t:'Procedimientos y Funciones',d:'Stored Procedures y funciones almacenadas.',pdf:'pdf/u3s3.pdf'},
-    {n:4,t:'Triggers y Optimización',d:'Disparadores y estrategias de indexación.',pdf:'pdf/u3s4.pdf'},
-  ]},
-  4:{title:'Unidad IV — Bases de Datos NoSQL',semanas:[
-    {n:1,t:'Introducción a NoSQL',d:'Tipos: documental, clave-valor, grafos, columnar.',pdf:'pdf/u4s1.pdf'},
-    {n:2,t:'MongoDB',d:'Colecciones, documentos BSON, consultas básicas.',pdf:'pdf/u4s2.pdf'},
-    {n:3,t:'Redis y Caché',d:'Estructuras en memoria, TTL y pub/sub.',pdf:'pdf/u4s3.pdf'},
-    {n:4,t:'Comparativa SQL vs NoSQL',d:'Casos de uso, ventajas, desventajas y proyectos.',pdf:'pdf/u4s4.pdf'},
-  ]},
+  1:{
+    label:'Unidad I',
+    title:'Introducción a Bases de Datos',
+    semanas:[
+      {
+        n:1, tema:'Fundamentos de BD',
+        desc:'Conceptos básicos, tipos de SGBD y arquitecturas.',
+        trabajos:[
+          /* ✏️ Agrega tus trabajos aquí. Para más trabajos duplica una línea */
+          { nombre:'Ejercicio de vectores Java', tipo:'Tarea', pdf:'pdf/trabajo1.pdf' },
+          /* { nombre:'Trabajo 2', tipo:'Práctica', pdf:'pdf/semana_1b.pdf' }, */
+        ]
+      },
+      {
+        n:2, tema:'Modelo Relacional',
+        desc:'Tablas, tuplas, atributos y relaciones.',
+        trabajos:[
+          { nombre:'Informe técnico comparativo',   tipo:'Informe',  pdf:'pdf/unidad1_semna2_1.pdf' },
+          { nombre:'Proyecto DS corregido',          tipo:'Proyecto', pdf:'pdf/semana_2b.pdf' },
+          { nombre:'Ejercicio de modelo relacional', tipo:'Tarea',    pdf:'pdf/semana_2c.pdf' },
+        ]
+      },
+      {
+        n:3, tema:'SQL Básico',
+        desc:'SELECT, INSERT, UPDATE, DELETE.',
+        trabajos:[
+          { nombre:'Práctica SQL básico', tipo:'Práctica', pdf:'pdf/semana_3.pdf' },
+        ]
+      },
+      {
+        n:4, tema:'DDL y Constraints',
+        desc:'CREATE TABLE, ALTER, PRIMARY KEY, FOREIGN KEY.',
+        trabajos:[
+          { nombre:'Tarea DDL y constraints', tipo:'Tarea', pdf:'pdf/semana_4.pdf' },
+        ]
+      },
+    ]
+  },
+
+  2:{
+    label:'Unidad II',
+    title:'Diseño y Normalización',
+    semanas:[
+      {
+        n:1, tema:'Modelo Entidad-Relación',
+        desc:'Diagrama ER, entidades, relaciones y cardinalidad.',
+        trabajos:[
+          { nombre:'Diagrama ER - Sistema académico', tipo:'Tarea', pdf:'pdf/semana_5.pdf' },
+        ]
+      },
+      {
+        n:2, tema:'Primera y Segunda Forma Normal',
+        desc:'1FN, 2FN y dependencias funcionales.',
+        trabajos:[
+          { nombre:'Ejercicio de normalización 1FN-2FN', tipo:'Tarea', pdf:'pdf/semana_6.pdf' },
+        ]
+      },
+      {
+        n:3, tema:'Tercera Forma Normal',
+        desc:'3FN, FNBC y eliminación de redundancias.',
+        trabajos:[
+          { nombre:'Ejercicio 3FN y FNBC', tipo:'Tarea', pdf:'pdf/semana_7.pdf' },
+        ]
+      },
+      {
+        n:4, tema:'Integridad Referencial',
+        desc:'Claves foráneas, ON DELETE, ON UPDATE.',
+        trabajos:[
+          { nombre:'Práctica integridad referencial', tipo:'Práctica', pdf:'pdf/semana_8.pdf' },
+        ]
+      },
+    ]
+  },
+
+  3:{
+    label:'Unidad III',
+    title:'SQL Avanzado',
+    semanas:[
+      {
+        n:1, tema:'Funciones y Agregados',
+        desc:'GROUP BY, HAVING y funciones de agregado.',
+        trabajos:[
+          { nombre:'Práctica GROUP BY y HAVING', tipo:'Práctica', pdf:'pdf/semana_9.pdf' },
+        ]
+      },
+      {
+        n:2, tema:'Vistas y Subconsultas',
+        desc:'CREATE VIEW y subconsultas correlacionadas.',
+        trabajos:[
+          { nombre:'Ejercicio de vistas', tipo:'Tarea', pdf:'pdf/semana_10.pdf' },
+        ]
+      },
+      {
+        n:3, tema:'Procedimientos y Funciones',
+        desc:'Stored Procedures y funciones almacenadas.',
+        trabajos:[
+          { nombre:'Stored Procedures - Tienda', tipo:'Tarea', pdf:'pdf/semana_11.pdf' },
+        ]
+      },
+      {
+        n:4, tema:'Triggers y Optimización',
+        desc:'Disparadores y estrategias de indexación.',
+        trabajos:[
+          { nombre:'Ejercicio de triggers', tipo:'Práctica', pdf:'pdf/semana_12.pdf' },
+        ]
+      },
+    ]
+  },
+
+  4:{
+    label:'Unidad IV',
+    title:'Bases de Datos NoSQL',
+    semanas:[
+      {
+        n:1, tema:'Introducción a NoSQL',
+        desc:'Tipos: documental, clave-valor, grafos, columnar.',
+        trabajos:[
+          { nombre:'Cuadro comparativo NoSQL', tipo:'Informe', pdf:'pdf/semana_13.pdf' },
+        ]
+      },
+      {
+        n:2, tema:'MongoDB',
+        desc:'Colecciones, documentos BSON y consultas básicas.',
+        trabajos:[
+          { nombre:'Práctica MongoDB', tipo:'Práctica', pdf:'pdf/semana_14.pdf' },
+        ]
+      },
+      {
+        n:3, tema:'Redis y Caché',
+        desc:'Estructuras en memoria, TTL y pub/sub.',
+        trabajos:[
+          { nombre:'Ejercicio Redis', tipo:'Tarea', pdf:'pdf/semana_15.pdf' },
+        ]
+      },
+      {
+        n:4, tema:'Comparativa SQL vs NoSQL',
+        desc:'Casos de uso, ventajas y desventajas.',
+        trabajos:[
+          { nombre:'Informe final comparativa', tipo:'Informe', pdf:'pdf/semana_16.pdf' },
+        ]
+      },
+    ]
+  },
 };
 
-/* AUTH */
-let pendingUnit=null;
+/* ══ STARS ══ */
+(function(){
+  const cv=document.getElementById('stars'),cx=cv.getContext('2d');
+  let W,H,st=[];
+  function init(){
+    W=cv.width=innerWidth;H=cv.height=innerHeight;
+    st=Array.from({length:160},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*1.4+0.2,
+      a:Math.random(),s:(Math.random()-.5)*.002,
+      vx:(Math.random()-.5)*.08,vy:(Math.random()-.5)*.08
+    }));
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    st.forEach(s=>{
+      s.a+=s.s;if(s.a<=0||s.a>=1)s.s*=-1;
+      s.x+=s.vx;s.y+=s.vy;
+      if(s.x<0)s.x=W;if(s.x>W)s.x=0;
+      if(s.y<0)s.y=H;if(s.y>H)s.y=0;
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(255,160,170,${s.a*.55})`;cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  init();draw();addEventListener('resize',init);
+})();
+
+/* ══ CURSOR GLOW ══ */
+const glow=document.getElementById('cursorGlow');
+document.addEventListener('mousemove',e=>{
+  glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';
+});
+
+/* ══ NAVBAR SCROLL ══ */
+addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',scrollY>30);
+});
+
+/* ══ SCROLL REVEAL ══ */
+const revealObserver = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.05});
+
+function initReveal(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    // Si ya está en el viewport, hacerlo visible de inmediato
+    const rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight){
+      el.classList.add('visible');
+    } else {
+      el.classList.remove('visible');
+      revealObserver.observe(el);
+    }
+  });
+}
+
+/* ══ AUTH ══ */
 function openLogin(){document.getElementById('loginOverlay').classList.add('show')}
 function closeLogin(){document.getElementById('loginOverlay').classList.remove('show')}
 function closeIfBg(e){if(e.target===document.getElementById('loginOverlay'))closeLogin()}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
-['user','pass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
+['user','pass'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+});
 
 function doLogin(){
-  const u=document.getElementById('user').value;
-  const p=document.getElementById('pass').value;
-  if(u==='admin'&&p==='1234'){   /* 🔐 Cambia 'admin' y '1234' por tu usuario y contraseña */
+  /* 🔐 Cambia 'admin' y '1234' */
+  if(document.getElementById('user').value==='admin'&&document.getElementById('pass').value==='1234'){
     localStorage.setItem('sesion','activa');
-    closeLogin();
-    syncNav();
+    closeLogin();syncNav();
     document.getElementById('err').textContent='';
-    if(pendingUnit){showUnit(pendingUnit);pendingUnit=null}
   }else{
     document.getElementById('err').textContent='Usuario o contraseña incorrectos';
   }
 }
-
 function logout(){localStorage.removeItem('sesion');syncNav();goHero()}
 function loggedIn(){return!!localStorage.getItem('sesion')}
-
 function syncNav(){
   document.getElementById('btnIn').style.display=loggedIn()?'none':'';
   document.getElementById('btnOut').style.display=loggedIn()?'':'none';
 }
 
-/* NAV */
-function show(id){['secHero','secPerfil','secSemanas'].forEach(s=>document.getElementById(s).style.display=s===id?'block':'none')}
-function goHero(){show('secHero');window.scrollTo({top:0,behavior:'smooth'})}
-function goPerfil(){show('secPerfil');window.scrollTo({top:0,behavior:'smooth'})}
-function goUnit(n){
-  showUnit(n);  /* Cualquier visitante puede ver las unidades sin login */
+/* ══ NAVEGACIÓN ══ */
+function show(id){
+  ['secHero','secPerfil','secSemanas'].forEach(s=>
+    document.getElementById(s).style.display=s===id?'block':'none'
+  );
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,100);
 }
+function goHero(){show('secHero')}
+function goPerfil(){show('secPerfil')}
+function goUnit(n){showUnit(n)}
 
+/* ══ RENDERIZAR SEMANAS ══ */
 function showUnit(n){
   show('secSemanas');
-  window.scrollTo({top:0,behavior:'smooth'});
-  const data=D[n];
-  const nums=['I','II','III','IV'];
+  const data=UNIDADES[n];
+  document.getElementById('panelLabel').textContent=data.label;
   document.getElementById('panelTitle').textContent=data.title;
-  document.getElementById('semanasGrid').innerHTML=data.semanas.map(s=>`
+
+  document.getElementById('semanasGrid').innerHTML = data.semanas.map(s=>`
     <div class="s-card">
-      <h4>Semana ${s.n}</h4>
-      <p class="s-sub">${s.t}</p>
-      <p class="s-desc">${s.d}</p>
-      <a href="${s.pdf}" target="_blank">📄 Ver PDF</a>
+      <div class="s-header">
+        <span class="s-num">${String(s.n).padStart(2,'0')}</span>
+        <span class="s-week-badge">Semana ${s.n}</span>
+      </div>
+      <div class="s-body">
+        <h3 class="s-title">${s.tema}</h3>
+        <p class="s-desc">${s.desc}</p>
+        <div class="trabajos">
+          ${s.trabajos.map(t=>`
+            <div class="trabajo">
+              <div class="trabajo-info">
+                <div class="trabajo-name">${t.nombre}</div>
+                <div class="trabajo-meta">${t.tipo}</div>
+              </div>
+              <a class="btn-pdf" href="${t.pdf}" target="_blank">📄 PDF</a>
+            </div>
+          `).join('')}
+        </div>
+      </div>
     </div>
   `).join('');
+
+  setTimeout(initReveal,50);
 }
 
-window.onload=syncNav;
+/* ══ INIT ══ */
+window.onload=function(){syncNav();initReveal()};
 </script>
 </body>
 </html>
-
