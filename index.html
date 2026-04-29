@@ -365,7 +365,6 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   transition:border-color .2s,background .2s;
 }
 .trabajo:hover{border-color:rgba(255,77,109,0.25);background:rgba(255,77,109,0.04)}
-.trabajo-info{}
 .trabajo-name{font-size:13px;font-weight:600;margin-bottom:2px}
 .trabajo-meta{font-size:11px;color:var(--muted)}
 .btn-pdf{
@@ -553,28 +552,47 @@ footer .fl{display:flex;align-items:center;gap:10px}
     </section>
   </div>
 
-  <!-- ── PERFIL ── -->
-  <section id="secPerfil" style="display:none">
-    <div class="slabel">Sobre mí</div>
-    <h2 class="stitle">Perfil del Estudiante</h2>
-    <div class="perfil-wrap">
-      <div class="photo-box">👨‍💻</div>
-      <div class="perfil-info">
-        <!-- ✏️ Cambia tu nombre, ciclo, sección, docente aquí -->
-        <h2>Michael Axel Vilcapoma Ochoa</h2>
-        <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
-        <div class="ptags">
-          <span class="ptag">Ciclo V</span>
-          <span class="ptag">Sección B-1</span>
-          <span class="ptag">Base de Datos II</span>
-          <span class="ptag">Huancayo, Perú</span>
-          <span class="ptag">2026</span>
-        </div>
-        <p class="bio">Estudiante de Ingeniería de Sistemas y Computación en la Universidad Peruana Los Andes. Este portafolio recopila los trabajos académicos del curso Base de Datos II, demostrando dominio progresivo de conceptos como SQL, normalización, procedimientos almacenados y tecnologías NoSQL.</p>
-        <p class="docente">Docente: <strong>Raul Fernandez Bejarano</strong></p>
-      </div>
+ <!-- ── PERFIL ── -->
+<section id="secPerfil" style="display:none">
+  <div class="slabel">Sobre mí</div>
+  <h2 class="stitle">Perfil del Estudiante</h2>
+
+  <div class="perfil-wrap">
+    
+    <div class="photo-box">
+      <img 
+        src="imagenes/123.jpg" 
+        alt="Mi foto de perfil"
+        style="width:250px; height:250px; object-fit:contain; object-position:center; border-radius:24px; display:block;"
+      >
     </div>
-  </section>
+
+    <div class="perfil-info">
+      <h2>Michael Axel Vilcapoma Ochoa</h2>
+      <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
+
+      <div class="ptags">
+        <span class="ptag">Ciclo V</span>
+        <span class="ptag">Sección B-1</span>
+        <span class="ptag">Base de Datos II</span>
+        <span class="ptag">Huancayo, Perú</span>
+        <span class="ptag">2026</span>
+      </div>
+
+      <p class="bio">
+        Estudiante de Ingeniería de Sistemas y Computación en la Universidad Peruana Los Andes.
+        Este portafolio recopila los trabajos académicos del curso Base de Datos II, demostrando
+        dominio progresivo de conceptos como SQL, normalización, procedimientos almacenados y
+        tecnologías NoSQL.
+      </p>
+
+      <p class="docente">
+        Docente: <strong>Raul Fernandez Bejarano</strong>
+      </p>
+    </div>
+
+  </div>
+</section>
 
   <!-- ── SEMANAS ── -->
   <section id="secSemanas" style="display:none">
@@ -611,21 +629,21 @@ const UNIDADES = {
     title:'Introducción a Bases de Datos',
     semanas:[
       {
-        n:1, tema:'Fundamentos de BD',
+        n:1, tema:'Introduccion a la Arquitectura de Base de Datos',
         desc:'Conceptos básicos, tipos de SGBD y arquitecturas.',
         trabajos:[
           /* ✏️ Agrega tus trabajos aquí. Para más trabajos duplica una línea */
-          { nombre:'Ejercicio de vectores Java', tipo:'Tarea', pdf:'pdf/trabajo1.pdf' },
+          { nombre:'ARQUITECTURAS DEBASE DE DATOS', tipo:'Tarea', pdf:'pdf/Arquitecturas_BD_SGA.pdf' },
           /* { nombre:'Trabajo 2', tipo:'Práctica', pdf:'pdf/semana_1b.pdf' }, */
         ]
       },
       {
         n:2, tema:'Modelo Relacional',
-        desc:'Tablas, tuplas, atributos y relaciones.',
+        desc:'Gestores de Base de Datos.',
         trabajos:[
-          { nombre:'Informe técnico comparativo',   tipo:'Informe',  pdf:'pdf/unidad1_semna2_1.pdf' },
-          { nombre:'Proyecto DS corregido',          tipo:'Proyecto', pdf:'pdf/semana_2b.pdf' },
-          { nombre:'Ejercicio de modelo relacional', tipo:'Tarea',    pdf:'pdf/semana_2c.pdf' },
+          { nombre:'MANUAL DE INSTALACIÓN DE SQL (MYSQL)',   tipo:'Informe',  pdf:'pdf/unidad1_semna2_1.pdf' },
+          { nombre:'ANÁLISIS TÉCNICO DE DBMS',          tipo:'Proyecto', pdf:'pdf/Axel11.pdf' },
+          { nombre:'Relaciones entre las Entidades', tipo:'Tarea',    pdf:'pdf/Diagrama Entidad–Relación Compras y Productos.pdf' },
         ]
       },
       {

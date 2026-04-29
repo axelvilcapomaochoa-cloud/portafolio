@@ -128,3 +128,28 @@ body{
   background:#ff4d6d;
 }
 
+
+
+.photo-box{
+  width: 250px;
+  height: 250px;
+  border-radius: 24px;
+  background: #2a0612;
+  border: 1px solid rgba(255,77,109,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-box img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 24px;
+  display: block;
+  background: #2a0612;
+}
