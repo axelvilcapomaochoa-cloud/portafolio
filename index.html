@@ -4,11 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portafolio · Base de Datos II · UPLA</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   🎨 VARIABLES — edita aquí para cambiar colores
-═══════════════════════════════════════════════════ */
 :root{
   --bg:#1a020a;
   --bg2:#2a0612;
@@ -20,15 +17,16 @@
   --muted:#d4a0aa;
   --border:rgba(255,77,109,0.15);
   --glow:0 0 40px rgba(255,77,109,0.2);
+  /* ✅ FUENTES NUEVAS */
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Epilogue',sans-serif;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden}
 
-/* ── CANVAS ── */
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* ── CURSOR GLOW ── */
 .cursor-glow{
   position:fixed;width:400px;height:400px;
   background:radial-gradient(circle,rgba(255,77,109,0.06) 0%,transparent 70%);
@@ -36,7 +34,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   transform:translate(-50%,-50%);transition:opacity .3s;
 }
 
-/* ══ NAVBAR ══ */
 .navbar{
   position:fixed;top:0;left:0;right:0;z-index:200;height:66px;
   display:flex;align-items:center;justify-content:space-between;
@@ -49,12 +46,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
 .navbar.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.5)}
 .logo{display:flex;align-items:center;gap:11px;cursor:pointer}
 .logo img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,77,109,0.4))}
-.logo-text strong{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;color:var(--accent);display:block;line-height:1.3}
-.logo-text span{font-size:11px;color:var(--muted)}
+.logo-text strong{font-family:var(--font-display);font-size:12.5px;font-weight:700;color:var(--accent);display:block;line-height:1.3;letter-spacing:.5px}
+.logo-text span{font-size:11px;color:var(--muted);font-family:var(--font-body)}
 .nav-links{display:flex;gap:4px;align-items:center}
 .nav-links a{
   text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);
   padding:6px 12px;border-radius:8px;cursor:pointer;
+  font-family:var(--font-body);
   transition:color .2s,background .2s;position:relative;
 }
 .nav-links a::after{
@@ -67,12 +65,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
 .btn-nav{
   padding:7px 16px;border-radius:8px;font-weight:600;font-size:13px;
   border:none;cursor:pointer;transition:transform .2s,opacity .2s;
+  font-family:var(--font-display);letter-spacing:.3px;
 }
 .btn-nav:hover{transform:translateY(-1px);opacity:.9}
 .btn-ingresar{background:var(--accent2);color:white}
 .btn-salir{background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.25)!important}
 
-/* ══ MODAL ══ */
 .overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.8);
   backdrop-filter:blur(12px);z-index:999;
@@ -89,14 +87,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
 @keyframes slideUp{from{transform:translateY(30px) scale(.95);opacity:0}to{transform:none;opacity:1}}
 .modal-close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;margin:-4px -4px 0 0;transition:color .2s}
 .modal-close:hover{color:var(--text)}
-.modal h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
-.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:28px}
+.modal h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:28px;font-family:var(--font-body)}
 .field{margin-bottom:16px}
-.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase;font-family:var(--font-display)}
 .field input{
   width:100%;padding:12px 15px;background:var(--bg3);
   border:1px solid var(--border);border-radius:11px;
-  color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;
+  color:var(--text);font-size:14px;font-family:var(--font-body);
   outline:none;transition:border-color .25s,box-shadow .25s;
 }
 .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,109,0.12)}
@@ -107,15 +105,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   font-size:15px;font-weight:600;cursor:pointer;margin-top:10px;
   transition:transform .2s,box-shadow .2s;
   box-shadow:0 4px 20px rgba(192,21,47,0.4);
+  font-family:var(--font-display);letter-spacing:.3px;
 }
 .btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,21,47,0.5)}
-#err{color:#f87171;font-size:11.5px;margin-top:10px;text-align:center;min-height:16px}
-.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:14px}
+#err{color:#f87171;font-size:11.5px;margin-top:10px;text-align:center;min-height:16px;font-family:var(--font-body)}
+.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:14px;font-family:var(--font-body)}
 
-/* ══ MAIN ══ */
 .main{position:relative;z-index:1;padding-top:66px}
 
-/* ══ HERO ══ */
 .hero{
   min-height:100vh;display:flex;flex-direction:column;
   justify-content:center;align-items:center;
@@ -123,7 +120,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   position:relative;
 }
 
-/* línea de partículas decorativas */
 .hero-line{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   width:600px;height:600px;border-radius:50%;
@@ -145,21 +141,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   background:rgba(255,77,109,0.07);
   color:var(--accent);font-size:11.5px;font-weight:500;
   letter-spacing:.4px;margin-bottom:28px;
+  font-family:var(--font-body);
   animation:fadeDown .7s ease both;
 }
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
+/* ── Nombre del estudiante con Space Grotesk ── */
 .hero-name{
-  font-family:'Syne',sans-serif;font-size:clamp(11px,1.6vw,14px);
-  font-weight:600;color:var(--muted);letter-spacing:4px;
+  font-family:var(--font-display);font-size:clamp(11px,1.6vw,14px);
+  font-weight:500;color:var(--muted);letter-spacing:3px;
   text-transform:uppercase;margin-bottom:16px;
   animation:fadeDown .7s .1s ease both;
 }
+
+/* ── Título principal ── */
 .hero h1{
-  font-family:'Syne',sans-serif;
+  font-family:var(--font-display);
   font-size:clamp(44px,7.5vw,96px);
-  font-weight:800;line-height:.95;margin-bottom:12px;
+  font-weight:700;line-height:.95;margin-bottom:12px;
+  letter-spacing:-2px;
   animation:fadeDown .7s .2s ease both;
 }
 .hl{
@@ -169,18 +170,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   animation:shimmer 4s linear infinite;
 }
 @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+
 .hero-sub{
   font-size:clamp(14px,1.8vw,17px);color:var(--muted);
   max-width:520px;line-height:1.8;margin-bottom:40px;
+  font-family:var(--font-body);font-weight:300;
   animation:fadeDown .7s .3s ease both;
 }
+
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeDown .7s .4s ease both}
 .btn-p{
   padding:14px 28px;background:var(--accent);color:#1a020a;
-  font-weight:700;font-size:14px;border-radius:12px;border:none;
+  font-weight:600;font-size:14px;border-radius:12px;border:none;
   cursor:pointer;position:relative;overflow:hidden;
   transition:transform .2s,box-shadow .2s;
   box-shadow:0 0 30px rgba(255,77,109,0.35);
+  font-family:var(--font-display);letter-spacing:.3px;
 }
 .btn-p::after{
   content:'';position:absolute;inset:0;
@@ -191,9 +196,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
 .btn-p:hover{transform:translateY(-3px);box-shadow:0 0 55px rgba(255,77,109,0.55)}
 .btn-s{
   padding:14px 28px;background:transparent;color:var(--text);
-  font-weight:600;font-size:14px;border-radius:12px;
+  font-weight:500;font-size:14px;border-radius:12px;
   border:1px solid rgba(255,77,109,0.25);cursor:pointer;
   transition:background .2s,border-color .2s,transform .2s;
+  font-family:var(--font-display);letter-spacing:.3px;
 }
 .btn-s:hover{background:var(--bg2);border-color:var(--accent);transform:translateY(-3px)}
 
@@ -205,24 +211,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);ove
   padding:6px 14px;border-radius:999px;border:1px solid var(--border);
   font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:7px;
   transition:border-color .2s,color .2s;cursor:default;
+  font-family:var(--font-body);
 }
 .tag:hover{border-color:rgba(255,77,109,0.35);color:var(--text)}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
 
-/* ══ SCROLL REVEAL ══ */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:none}
-/* unit-cards siempre visibles — el reveal solo es para textos/stats */
 .unit-card{opacity:1!important;transform:none!important}
 
-/* ══ SECTION ══ */
 section{padding:100px 44px;max-width:1200px;margin:0 auto}
-.slabel{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.stitle{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;line-height:1.1;margin-bottom:16px}
-.sdesc{font-size:15px;color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:50px}
+.slabel{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-family:var(--font-display)}
+.stitle{font-family:var(--font-display);font-size:clamp(28px,4vw,46px);font-weight:700;line-height:1.1;margin-bottom:16px;letter-spacing:-1px}
+.sdesc{font-size:15px;color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:50px;font-family:var(--font-body);font-weight:300}
 
-/* ══ UNITS GRID ══ */
 .units-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
 .unit-card{
   background:var(--bg2);border:1px solid var(--border);
@@ -230,7 +233,6 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;
   position:relative;overflow:hidden;
 }
-/* shimmer on hover */
 .unit-card::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,transparent 40%,rgba(255,77,109,0.04) 60%,transparent 80%);
@@ -252,25 +254,24 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
 .unit-card:nth-child(3):hover{border-color:rgba(245,158,11,0.35)}
 .unit-card:nth-child(4):hover{border-color:rgba(123,13,30,0.4)}
 
-.unum{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1;margin-bottom:16px}
+.unum{font-family:var(--font-display);font-size:50px;font-weight:700;line-height:1;margin-bottom:16px;letter-spacing:-2px}
 .unit-card:nth-child(1) .unum{color:rgba(255,77,109,0.13)}
 .unit-card:nth-child(2) .unum{color:rgba(192,21,47,0.18)}
 .unit-card:nth-child(3) .unum{color:rgba(245,158,11,0.16)}
 .unit-card:nth-child(4) .unum{color:rgba(123,13,30,0.2)}
-.ubadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:600;margin-bottom:12px}
+.ubadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:600;margin-bottom:12px;font-family:var(--font-display);letter-spacing:.4px}
 .unit-card:nth-child(1) .ubadge{background:rgba(255,77,109,0.1);color:#ff7f8f}
 .unit-card:nth-child(2) .ubadge{background:rgba(192,21,47,0.12);color:#ff6b6b}
 .unit-card:nth-child(3) .ubadge{background:rgba(245,158,11,0.1);color:#f59e0b}
 .unit-card:nth-child(4) .ubadge{background:rgba(255,77,109,0.08);color:#ff9aaa}
-.unit-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px}
-.unit-card .udesc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:20px}
-.ulink{font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px;transition:gap .25s}
+.unit-card h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
+.unit-card .udesc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:20px;font-family:var(--font-body)}
+.ulink{font-size:12.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:6px;transition:gap .25s;font-family:var(--font-display);letter-spacing:.2px}
 .unit-card:hover .ulink{gap:10px}
 .unit-card:nth-child(2) .ulink{color:#ff6b6b}
 .unit-card:nth-child(3) .ulink{color:#f59e0b}
 .unit-card:nth-child(4) .ulink{color:#ff9aaa}
 
-/* semanas count pill */
 .u-weeks{display:flex;gap:4px;margin-bottom:18px}
 .wdot{width:8px;height:8px;border-radius:50%;background:var(--border)}
 .unit-card:nth-child(1) .wdot{background:rgba(255,77,109,0.3)}
@@ -278,7 +279,6 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
 .unit-card:nth-child(3) .wdot{background:rgba(245,158,11,0.3)}
 .unit-card:nth-child(4) .wdot{background:rgba(123,13,30,0.35)}
 
-/* ══ PERFIL ══ */
 .perfil-wrap{display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap}
 .photo-box{
   width:210px;height:210px;border-radius:24px;
@@ -290,37 +290,36 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(255,77,109,0.08),transparent);
 }
-.perfil-info h2{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:5px}
-.perfil-info .role{font-size:13.5px;color:var(--accent);font-weight:500;margin-bottom:18px}
+.perfil-info h2{font-family:var(--font-display);font-size:30px;font-weight:700;margin-bottom:5px;letter-spacing:-.5px}
+.perfil-info .role{font-size:13.5px;color:var(--accent);font-weight:500;margin-bottom:18px;font-family:var(--font-body)}
 .ptags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .ptag{
   padding:5px 12px;border:1px solid var(--border);border-radius:8px;
   font-size:11.5px;color:var(--muted);
   transition:border-color .2s,color .2s;
+  font-family:var(--font-display);font-weight:500;letter-spacing:.2px;
 }
 .ptag:hover{border-color:rgba(255,77,109,0.3);color:var(--text)}
-.bio{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:460px}
-.docente{margin-top:16px;font-size:12.5px;color:var(--muted)}
-.docente strong{color:var(--text)}
+.bio{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:460px;font-family:var(--font-body);font-weight:300}
+.docente{margin-top:16px;font-size:12.5px;color:var(--muted);font-family:var(--font-body)}
+.docente strong{color:var(--text);font-family:var(--font-display);font-weight:600}
 
-/* ══ SEMANAS SECTION ══ */
 .back-btn{
   display:inline-flex;align-items:center;gap:8px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--muted);padding:9px 16px;border-radius:10px;
   font-size:13px;cursor:pointer;margin-bottom:10px;
   transition:color .2s,border-color .2s,transform .2s;
+  font-family:var(--font-display);font-weight:500;
 }
 .back-btn:hover{color:var(--text);border-color:rgba(255,77,109,0.3);transform:translateX(-3px)}
 
 .panel-header{margin-bottom:36px}
-.panel-unit-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.panel-title{font-family:'Syne',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;line-height:1.1}
+.panel-unit-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;font-family:var(--font-display)}
+.panel-title{font-family:var(--font-display);font-size:clamp(24px,3.5vw,38px);font-weight:700;line-height:1.1;letter-spacing:-.5px}
 
-/* semanas grid — 2 columnas en desktop */
 .semanas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
 
-/* ── tarjeta de semana ── */
 .s-card{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:18px;padding:0;overflow:hidden;
@@ -332,31 +331,29 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   box-shadow:0 16px 50px rgba(0,0,0,0.4),var(--glow);
 }
 
-/* cabecera de semana */
 .s-header{
   padding:20px 22px 16px;
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
 }
 .s-num{
-  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
-  color:rgba(255,77,109,0.15);line-height:1;
+  font-family:var(--font-display);font-size:28px;font-weight:700;
+  color:rgba(255,77,109,0.15);line-height:1;letter-spacing:-1px;
 }
 .s-week-badge{
   background:rgba(255,77,109,0.08);color:var(--accent);
-  padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:999px;font-size:10px;font-weight:600;
   letter-spacing:.5px;text-transform:uppercase;
+  font-family:var(--font-display);
 }
 
-/* cuerpo */
 .s-body{padding:18px 22px}
 .s-title{
-  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
-  margin-bottom:5px;
+  font-family:var(--font-display);font-size:15px;font-weight:600;
+  margin-bottom:5px;letter-spacing:-.2px;
 }
-.s-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.s-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px;font-family:var(--font-body)}
 
-/* trabajos dentro de la semana */
 .trabajos{display:flex;flex-direction:column;gap:10px}
 .trabajo{
   background:var(--bg3);border:1px solid rgba(255,77,109,0.08);
@@ -365,8 +362,8 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   transition:border-color .2s,background .2s;
 }
 .trabajo:hover{border-color:rgba(255,77,109,0.25);background:rgba(255,77,109,0.04)}
-.trabajo-name{font-size:13px;font-weight:600;margin-bottom:2px}
-.trabajo-meta{font-size:11px;color:var(--muted)}
+.trabajo-name{font-size:13px;font-weight:600;margin-bottom:2px;font-family:var(--font-display);letter-spacing:-.1px}
+.trabajo-meta{font-size:11px;color:var(--muted);font-family:var(--font-body)}
 .btn-pdf{
   flex-shrink:0;
   display:inline-flex;align-items:center;gap:5px;
@@ -376,20 +373,13 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
   border-radius:9px;color:white;font-size:11.5px;font-weight:600;
   text-decoration:none;cursor:pointer;
   transition:transform .2s,box-shadow .2s;white-space:nowrap;
+  font-family:var(--font-display);letter-spacing:.2px;
 }
 .btn-pdf:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(192,21,47,0.4)}
 
-/* ══ DIVISOR DECORATIVO ══ */
-.divider{
-  width:100%;max-width:1200px;margin:0 auto;
-  padding:0 44px;
-}
-.divider-line{
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,77,109,0.2),transparent);
-}
+.divider{width:100%;max-width:1200px;margin:0 auto;padding:0 44px}
+.divider-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,77,109,0.2),transparent)}
 
-/* ══ STATS BAR ══ */
 .stats-bar{
   display:flex;gap:0;flex-wrap:wrap;
   background:var(--bg2);border:1px solid var(--border);
@@ -403,22 +393,21 @@ section{padding:100px 44px;max-width:1200px;margin:0 auto}
 .stat-item:last-child{border-right:none}
 .stat-item:hover{background:rgba(255,77,109,0.04)}
 .stat-num{
-  font-family:'Syne',sans-serif;font-size:36px;font-weight:800;
-  color:var(--accent);line-height:1;margin-bottom:6px;
+  font-family:var(--font-display);font-size:36px;font-weight:700;
+  color:var(--accent);line-height:1;margin-bottom:6px;letter-spacing:-1.5px;
 }
-.stat-label{font-size:12px;color:var(--muted);font-weight:500}
+.stat-label{font-size:12px;color:var(--muted);font-weight:400;font-family:var(--font-body)}
 
-/* ══ FOOTER ══ */
 footer{
   border-top:1px solid var(--border);padding:32px 44px;
   display:flex;justify-content:space-between;align-items:center;
   font-size:12.5px;color:var(--muted);
   position:relative;z-index:1;flex-wrap:wrap;gap:10px;
+  font-family:var(--font-body);
 }
 footer .fl{display:flex;align-items:center;gap:10px}
 .footer-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
 
-/* ══ SCROLLBAR ══ */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:rgba(255,77,109,0.3);border-radius:3px}
@@ -430,10 +419,8 @@ footer .fl{display:flex;align-items:center;gap:10px}
 <canvas id="stars"></canvas>
 <div class="cursor-glow" id="cursorGlow"></div>
 
-<!-- ══ NAVBAR ══ -->
 <nav class="navbar" id="navbar">
   <div class="logo" onclick="goHero()">
-    <!-- 🖼️ LOGO: cambia src="imagenes/upla.png" por la ruta de tu imagen -->
     <img src="imagenes/upla.png" alt="UPLA" onerror="this.style.display='none'">
     <div class="logo-text">
       <strong>UPLA</strong>
@@ -452,7 +439,6 @@ footer .fl{display:flex;align-items:center;gap:10px}
   </div>
 </nav>
 
-<!-- ══ MODAL LOGIN ══ -->
 <div class="overlay" id="loginOverlay" onclick="closeIfBg(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeLogin()">×</button>
@@ -466,19 +452,15 @@ footer .fl{display:flex;align-items:center;gap:10px}
   </div>
 </div>
 
-<!-- ══ MAIN ══ -->
 <div class="main">
 
-  <!-- ── HERO ── -->
   <div id="secHero">
     <div class="hero">
       <div class="hero-line"></div>
       <div class="hero-line2"></div>
 
       <div class="badge"><span class="badge-dot"></span>🎓 Ciclo Académico 2026 · UPLA</div>
-      <!-- ✏️ TU NOMBRE -->
       <p class="hero-name">Michael Axel Vilcapoma Ochoa</p>
-      <!-- ✏️ TÍTULO -->
       <h1>Portafolio<br><span class="hl">Base de Datos II</span></h1>
       <p class="hero-sub">Plataforma académica · Ingeniería de Sistemas y Computación. Explora el material de cada semana organizado por unidades.</p>
 
@@ -495,7 +477,6 @@ footer .fl{display:flex;align-items:center;gap:10px}
       </div>
     </div>
 
-    <!-- STATS -->
     <div style="max-width:1200px;margin:0 auto;padding:0 44px 60px" id="statsBar">
       <div class="stats-bar reveal">
         <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Unidades</div></div>
@@ -505,7 +486,6 @@ footer .fl{display:flex;align-items:center;gap:10px}
       </div>
     </div>
 
-    <!-- UNIDADES -->
     <section>
       <div class="slabel reveal">Contenido del Curso</div>
       <h2 class="stitle reveal">Unidades del Curso</h2>
@@ -552,49 +532,45 @@ footer .fl{display:flex;align-items:center;gap:10px}
     </section>
   </div>
 
- <!-- ── PERFIL ── -->
-<section id="secPerfil" style="display:none">
-  <div class="slabel">Sobre mí</div>
-  <h2 class="stitle">Perfil del Estudiante</h2>
+  <section id="secPerfil" style="display:none">
+    <div class="slabel">Sobre mí</div>
+    <h2 class="stitle">Perfil del Estudiante</h2>
 
-  <div class="perfil-wrap">
-    
-    <div class="photo-box">
-      <img 
-        src="imagenes/123.jpg" 
-        alt="Mi foto de perfil"
-        style="width:250px; height:250px; object-fit:contain; object-position:center; border-radius:24px; display:block;"
-      >
-    </div>
-
-    <div class="perfil-info">
-      <h2>Michael Axel Vilcapoma Ochoa</h2>
-      <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
-
-      <div class="ptags">
-        <span class="ptag">Ciclo V</span>
-        <span class="ptag">Sección B-1</span>
-        <span class="ptag">Base de Datos II</span>
-        <span class="ptag">Huancayo, Perú</span>
-        <span class="ptag">2026</span>
+    <div class="perfil-wrap">
+      <div class="photo-box">
+        <img 
+          src="imagenes/123.jpg" 
+          alt="Mi foto de perfil"
+          style="width:250px; height:250px; object-fit:contain; object-position:center; border-radius:24px; display:block;"
+        >
       </div>
 
-      <p class="bio">
-        Estudiante de Ingeniería de Sistemas y Computación en la Universidad Peruana Los Andes.
-        Este portafolio recopila los trabajos académicos del curso Base de Datos II, demostrando
-        dominio progresivo de conceptos como SQL, normalización, procedimientos almacenados y
-        tecnologías NoSQL.
-      </p>
+      <div class="perfil-info">
+        <h2>Michael Axel Vilcapoma Ochoa</h2>
+        <p class="role">Ingeniería de Sistemas y Computación · UPLA</p>
 
-      <p class="docente">
-        Docente: <strong>Raul Fernandez Bejarano</strong>
-      </p>
+        <div class="ptags">
+          <span class="ptag">Ciclo V</span>
+          <span class="ptag">Sección B-1</span>
+          <span class="ptag">Base de Datos II</span>
+          <span class="ptag">Huancayo, Perú</span>
+          <span class="ptag">2026</span>
+        </div>
+
+        <p class="bio">
+          Estudiante de Ingeniería de Sistemas y Computación en la Universidad Peruana Los Andes.
+          Este portafolio recopila los trabajos académicos del curso Base de Datos II, demostrando
+          dominio progresivo de conceptos como SQL, normalización, procedimientos almacenados y
+          tecnologías NoSQL.
+        </p>
+
+        <p class="docente">
+          Docente: <strong>Raul Fernandez Bejarano</strong>
+        </p>
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
-
-  <!-- ── SEMANAS ── -->
   <section id="secSemanas" style="display:none">
     <button class="back-btn" onclick="goHero()">← Volver</button>
     <div class="panel-header">
@@ -606,22 +582,15 @@ footer .fl{display:flex;align-items:center;gap:10px}
 
 </div>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div class="fl">
     <span class="footer-dot"></span>
-    <!-- ✏️ Tu nombre en el footer -->
     <span>© 2026 Michael Axel Vilcapoma Ochoa · UPLA</span>
   </div>
   <span>Base de Datos II · Ingeniería de Sistemas y Computación</span>
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════
-   📋 DATOS — edita aquí tus semanas y PDFs
-   Cada semana puede tener varios "trabajos"
-   solo agrega más objetos dentro de "trabajos:[]"
-══════════════════════════════════════════════════ */
 const UNIDADES = {
 
   1:{
@@ -632,32 +601,33 @@ const UNIDADES = {
         n:1, tema:'Introduccion a la Arquitectura de Base de Datos',
         desc:'Conceptos básicos, tipos de SGBD y arquitecturas.',
         trabajos:[
-          /* ✏️ Agrega tus trabajos aquí. Para más trabajos duplica una línea */
-          { nombre:'ARQUITECTURAS DEBASE DE DATOS', tipo:'Tarea', pdf:'pdf/Arquitecturas_BD_SGA.pdf' },
-          /* { nombre:'Trabajo 2', tipo:'Práctica', pdf:'pdf/semana_1b.pdf' }, */
+          { nombre:'ARQUITECTURAS DE BASE DE DATOS', tipo:'Tarea', pdf:'pdf/Arquitecturas_BD_SGA.pdf' },
         ]
       },
       {
-        n:2, tema:'Modelo Relacional',
+        n:2, tema:'TRABAJO SEMANA 02',
         desc:'Gestores de Base de Datos.',
         trabajos:[
-          { nombre:'MANUAL DE INSTALACIÓN DE SQL (MYSQL)',   tipo:'Informe',  pdf:'pdf/unidad1_semna2_1.pdf' },
+          { nombre:'MANUAL DE INSTALACIÓN DE SQL (MYSQL)',   tipo:'Informe',  pdf:'pdf/AXELLPRIMERO.pdf' },
           { nombre:'ANÁLISIS TÉCNICO DE DBMS',          tipo:'Proyecto', pdf:'pdf/Axel11.pdf' },
           { nombre:'Relaciones entre las Entidades', tipo:'Tarea',    pdf:'pdf/Diagrama Entidad–Relación Compras y Productos.pdf' },
         ]
       },
       {
-        n:3, tema:'SQL Básico',
+        n:3, tema:'TRABAJOS SEMANA 03',
         desc:'SELECT, INSERT, UPDATE, DELETE.',
         trabajos:[
-          { nombre:'Práctica SQL básico', tipo:'Práctica', pdf:'pdf/semana_3.pdf' },
+          { nombre:'Modelado y Normalización de Bases de Datos', tipo:'Práctica', pdf:'pdf/AXEL333.pdf' },
+          { nombre:'Diagrama Relacional', tipo:'Práctica', pdf:'pdf/Axel444.pdf' },
+          { nombre:'Cuestionario ', tipo:'Práctica', pdf:'pdf/Cuestionario SEM 3.pdf' },
         ]
       },
       {
-        n:4, tema:'DDL y Constraints',
+        n:4, tema:'TRABAJO SEMANA 04',
         desc:'CREATE TABLE, ALTER, PRIMARY KEY, FOREIGN KEY.',
         trabajos:[
-          { nombre:'Tarea DDL y constraints', tipo:'Tarea', pdf:'pdf/semana_4.pdf' },
+          { nombre:'ARQUITECTURAS DE BASE DE DATOS Y SU APLICABILIDAD TECNOLÓGICA', tipo:'Tarea', pdf:'pdf/semana 4 01.pdf' },
+          { nombre:'NORMALIZACIÓN DE BASES DE DATOS', tipo:'Tarea', pdf:'pdf/semana 4 02.pdf' },
         ]
       },
     ]
@@ -769,7 +739,6 @@ const UNIDADES = {
   },
 };
 
-/* ══ STARS ══ */
 (function(){
   const cv=document.getElementById('stars'),cx=cv.getContext('2d');
   let W,H,st=[];
@@ -797,25 +766,21 @@ const UNIDADES = {
   init();draw();addEventListener('resize',init);
 })();
 
-/* ══ CURSOR GLOW ══ */
 const glow=document.getElementById('cursorGlow');
 document.addEventListener('mousemove',e=>{
   glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';
 });
 
-/* ══ NAVBAR SCROLL ══ */
 addEventListener('scroll',()=>{
   document.getElementById('navbar').classList.toggle('scrolled',scrollY>30);
 });
 
-/* ══ SCROLL REVEAL ══ */
 const revealObserver = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 },{threshold:0.05});
 
 function initReveal(){
   document.querySelectorAll('.reveal').forEach(el=>{
-    // Si ya está en el viewport, hacerlo visible de inmediato
     const rect = el.getBoundingClientRect();
     if(rect.top < window.innerHeight){
       el.classList.add('visible');
@@ -826,7 +791,6 @@ function initReveal(){
   });
 }
 
-/* ══ AUTH ══ */
 function openLogin(){document.getElementById('loginOverlay').classList.add('show')}
 function closeLogin(){document.getElementById('loginOverlay').classList.remove('show')}
 function closeIfBg(e){if(e.target===document.getElementById('loginOverlay'))closeLogin()}
@@ -837,7 +801,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
 });
 
 function doLogin(){
-  /* 🔐 Cambia 'admin' y '1234' */
   if(document.getElementById('user').value==='admin'&&document.getElementById('pass').value==='1234'){
     localStorage.setItem('sesion','activa');
     closeLogin();syncNav();
@@ -853,7 +816,6 @@ function syncNav(){
   document.getElementById('btnOut').style.display=loggedIn()?'':'none';
 }
 
-/* ══ NAVEGACIÓN ══ */
 function show(id){
   ['secHero','secPerfil','secSemanas'].forEach(s=>
     document.getElementById(s).style.display=s===id?'block':'none'
@@ -865,7 +827,6 @@ function goHero(){show('secHero')}
 function goPerfil(){show('secPerfil')}
 function goUnit(n){showUnit(n)}
 
-/* ══ RENDERIZAR SEMANAS ══ */
 function showUnit(n){
   show('secSemanas');
   const data=UNIDADES[n];
@@ -899,7 +860,6 @@ function showUnit(n){
   setTimeout(initReveal,50);
 }
 
-/* ══ INIT ══ */
 window.onload=function(){syncNav();initReveal()};
 </script>
 </body>
