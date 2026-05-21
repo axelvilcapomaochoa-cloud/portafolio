@@ -578,6 +578,75 @@ section{padding:80px 44px;max-width:1200px;margin:0 auto}
 }
 .btn-pdf:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,0.5);background:linear-gradient(135deg,rgba(124,58,237,0.9),rgba(168,85,247,0.8))}
 
+/* ── TRABAJO CON GALERÍA (Unidad II) ── */
+.trabajo.has-imgs{
+  flex-direction:column;align-items:stretch;gap:0;padding:0;overflow:hidden;
+}
+
+/* Grid 2x2 */
+.imgs-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:3px;width:100%;height:220px;
+  border-bottom:1px solid rgba(168,85,247,0.1);
+}
+.imgs-grid-thumb{
+  position:relative;overflow:hidden;cursor:zoom-in;
+}
+.imgs-grid-thumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease, filter .3s ease;
+}
+.imgs-grid-thumb:hover img{transform:scale(1.08);filter:brightness(1.1)}
+.imgs-grid-thumb::after{
+  content:'🔍';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  background:rgba(168,85,247,0.0);
+  transition:background .3s;
+  opacity:0;
+}
+.imgs-grid-thumb:hover::after{background:rgba(168,85,247,0.18);opacity:1}
+
+/* Badge sobre la galería */
+.imgs-grid-badge{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 10px;
+  pointer-events:none;z-index:2;
+}
+.imgs-grid-wrap{position:relative}
+.imgs-badge-tag{
+  background:rgba(168,85,247,0.85);backdrop-filter:blur(8px);
+  color:white;font-size:9px;font-weight:600;
+  padding:3px 9px;border-radius:999px;
+  font-family:var(--font-mono);letter-spacing:.5px;
+  border:1px solid rgba(168,85,247,0.4);
+}
+.imgs-count-tag{
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);
+  color:rgba(255,255,255,0.8);font-size:9px;font-weight:500;
+  padding:3px 9px;border-radius:999px;
+  font-family:var(--font-mono);letter-spacing:.3px;
+}
+
+.trabajo-img-error{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;
+  background:rgba(168,85,247,0.04);
+  color:rgba(168,85,247,0.25);font-size:24px;
+}
+.trabajo-img-error span{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+.trabajo-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;gap:12px;
+}
+
+/* Cursor pointer en imagen clickeable */
+.trabajo-img-wrap{cursor:zoom-in}
+
 /* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:none}
@@ -640,6 +709,64 @@ footer{
 
 /* ── SELECTION ── */
 ::selection{background:rgba(168,85,247,0.3);color:white}
+
+/* ── LIGHTBOX ── */
+.lightbox{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,0);backdrop-filter:blur(0px);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  pointer-events:none;
+  transition:background .35s ease, backdrop-filter .35s ease;
+}
+.lightbox.active{
+  background:rgba(0,0,0,0.92);backdrop-filter:blur(20px);
+  pointer-events:all;
+}
+.lightbox-inner{
+  position:relative;max-width:92vw;max-height:90vh;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  transform:scale(.88) translateY(20px);opacity:0;
+  transition:transform .4s cubic-bezier(.34,1.4,.64,1), opacity .35s ease;
+}
+.lightbox.active .lightbox-inner{transform:scale(1) translateY(0);opacity:1}
+
+.lightbox-img{
+  max-width:92vw;max-height:80vh;
+  border-radius:16px;display:block;
+  box-shadow:0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(168,85,247,0.25);
+  object-fit:contain;
+}
+.lightbox-caption{
+  font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,0.6);
+  letter-spacing:.5px;text-align:center;
+}
+.lightbox-close{
+  position:fixed;top:20px;right:24px;
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);
+  color:white;font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;backdrop-filter:blur(10px);
+  font-family:var(--font-body);line-height:1;
+}
+.lightbox-close:hover{background:rgba(168,85,247,0.35);transform:scale(1.1)}
+
+.lightbox-nav{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);
+  color:white;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;backdrop-filter:blur(10px);
+}
+.lightbox-nav:hover{background:rgba(168,85,247,0.35)}
+.lightbox-prev{left:16px}
+.lightbox-next{right:16px}
+.lightbox-nav.hidden{opacity:0;pointer-events:none}
+
+/* Cursor pointer en imagen clickeable */
+.trabajo-img-wrap{cursor:zoom-in}
 </style>
 </head>
 <body>
@@ -694,6 +821,17 @@ footer{
 </div>
 
 <!-- MAIN -->
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="lbClickOutside(event)">
+  <button class="lightbox-close" onclick="closeLightbox()" title="Cerrar (Esc)">×</button>
+  <button class="lightbox-nav lightbox-prev hidden" id="lbPrev" onclick="lbNav(-1)">‹</button>
+  <button class="lightbox-nav lightbox-next hidden" id="lbNext" onclick="lbNav(1)">›</button>
+  <div class="lightbox-inner">
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+    <div class="lightbox-caption" id="lbCaption"></div>
+  </div>
+</div>
+
 <div class="main">
 
   <!-- HERO -->
@@ -916,17 +1054,22 @@ const UNIDADES = {
         ]},
     ]
   },
+
   2:{
     label:'Unidad II',title:'Diseño y Normalización',
     semanas:[
-      {n:5,tema:'TRABAJO SEMANA 05',desc:'Diagrama ER, entidades, relaciones y cardinalidad.',
-        trabajos:[{nombre:'Resumen y Mapa conceltual - Sistema académico',tipo:'Tarea',pdf:'pdf/Introducción a SQL Server 2022 Visual.pdf'}]},
+        {n:5,tema:'TRABAJO SEMANA 05',desc:'Diagrama ER, entidades, relaciones y cardinalidad.',
+        trabajos:[{nombre:'Resumen y Mapa conceltual - Sistema académico',tipo:'Tarea',pdf:'pdf/Introducción a SQL Server 2022 Visual.pdf',
+          imgs:['imagenes/imagen.png','imagenes/imagen2.png','imagenes/imagen3.png','imagenes/imagen4.png']}]},
       {n:6,tema:'Primera y Segunda Forma Normal',desc:'1FN, 2FN y dependencias funcionales.',
-        trabajos:[{nombre:'Ejercicio de normalización 1FN-2FN',tipo:'Tarea',pdf:'pdf/semana_6.pdf'}]},
+        trabajos:[{nombre:'Ejercicio de normalización 1FN-2FN',tipo:'Tarea',pdf:'pdf/lalote.pdf',
+          imgs:['imagenes/lalo.png']}]},
       {n:7,tema:'Tercera Forma Normal',desc:'3FN, FNBC y eliminación de redundancias.',
-        trabajos:[{nombre:'Ejercicio 3FN y FNBC',tipo:'Tarea',pdf:'pdf/semana_7.pdf'}]},
+        trabajos:[{nombre:'Ejercicio 3FN y FNBC',tipo:'Tarea',pdf:'pdf/semana_7.pdf',
+          imgs:['imagenes/sem7_1.jpg','imagenes/sem7_2.jpg','imagenes/sem7_3.jpg','imagenes/sem7_4.jpg']}]},
       {n:8,tema:'Integridad Referencial',desc:'Claves foráneas, ON DELETE, ON UPDATE.',
-        trabajos:[{nombre:'Práctica integridad referencial',tipo:'Práctica',pdf:'pdf/semana_8.pdf'}]},
+        trabajos:[{nombre:'Práctica integridad referencial',tipo:'Práctica',pdf:'pdf/semana_8.pdf',
+          imgs:['imagenes/sem8_1.jpg','imagenes/sem8_2.jpg','imagenes/sem8_3.jpg','imagenes/sem8_4.jpg']}]},
     ]
   },
   3:{
@@ -1095,7 +1238,7 @@ function animCount(el){
 function openLogin(){document.getElementById('loginOverlay').classList.add('show')}
 function closeLogin(){document.getElementById('loginOverlay').classList.remove('show')}
 function closeIfBg(e){if(e.target===document.getElementById('loginOverlay'))closeLogin()}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape' && !document.getElementById('lightbox').classList.contains('active'))closeLogin()});
 ['user','pass'].forEach(id=>{
   const el=document.getElementById(id);
   if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -1144,15 +1287,42 @@ function goUnit(n){
         <h3 class="s-title">${s.tema}</h3>
         <p class="s-desc">${s.desc}</p>
         <div class="trabajos">
-          ${s.trabajos.map(t=>`
-            <div class="trabajo">
-              <div>
-                <div class="trabajo-name">${t.nombre}</div>
-                <div class="trabajo-meta">// ${t.tipo}</div>
-              </div>
-              <a class="btn-pdf" href="${t.pdf}" target="_blank">📄 PDF</a>
-            </div>
-          `).join('')}
+          ${s.trabajos.map(t => {
+            if(t.imgs && t.imgs.length){
+              const imgsJson = JSON.stringify(t.imgs).replace(/'/g,"\\'");
+              const thumbs = t.imgs.slice(0,4).map((src,i)=>`
+                <div class="imgs-grid-thumb" onclick="openLightboxMulti(${JSON.stringify(t.imgs).replace(/"/g,"'")},${i},'${t.nombre.replace(/'/g,"\\'")}')">
+                  <img src="${src}" alt="${t.nombre} - foto ${i+1}"
+                    onerror="this.parentElement.innerHTML='<div class=trabajo-img-error>🖼<span>no encontrada</span></div>'">
+                </div>`).join('');
+              return `
+                <div class="trabajo has-imgs">
+                  <div class="imgs-grid-wrap">
+                    <div class="imgs-grid">${thumbs}</div>
+                    <div class="imgs-grid-badge">
+                      <span class="imgs-badge-tag">// ${t.tipo}</span>
+                      <span class="imgs-count-tag">📷 ${t.imgs.length} fotos</span>
+                    </div>
+                  </div>
+                  <div class="trabajo-footer">
+                    <div>
+                      <div class="trabajo-name">${t.nombre}</div>
+                      <div class="trabajo-meta">// ${t.tipo}</div>
+                    </div>
+                    <a class="btn-pdf" href="${t.pdf}" target="_blank">📄 PDF</a>
+                  </div>
+                </div>`;
+            } else {
+              return `
+                <div class="trabajo">
+                  <div>
+                    <div class="trabajo-name">${t.nombre}</div>
+                    <div class="trabajo-meta">// ${t.tipo}</div>
+                  </div>
+                  <a class="btn-pdf" href="${t.pdf}" target="_blank">📄 PDF</a>
+                </div>`;
+            }
+          }).join('')}
         </div>
       </div>
     </div>
@@ -1160,6 +1330,77 @@ function goUnit(n){
 }
 
 window.onload=function(){syncNav();initReveal()};
+
+// ── LIGHTBOX ──
+let lbImages=[], lbIndex=0;
+
+function openLightbox(src, caption){
+  openLightboxMulti([src], 0, caption);
+}
+
+function openLightboxMulti(imgs, startIdx, caption){
+  lbImages = imgs;
+  lbIndex  = startIdx || 0;
+  const lb  = document.getElementById('lightbox');
+  const img = document.getElementById('lbImg');
+  img.style.opacity='0';
+  img.style.transform='scale(.92)';
+  img.src = lbImages[lbIndex];
+  img.onload = function(){
+    img.style.opacity='1';
+    img.style.transform='scale(1)';
+  };
+  document.getElementById('lbCaption').textContent =
+    (caption || '') + (lbImages.length > 1 ? `  [${lbIndex+1} / ${lbImages.length}]` : '');
+  lb.classList.add('active');
+  document.body.style.overflow='hidden';
+  lbUpdateNav();
+}
+
+function closeLightbox(){
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('active');
+  document.body.style.overflow='';
+  setTimeout(()=>{ document.getElementById('lbImg').src=''; }, 400);
+}
+
+function lbNav(dir){
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  const img = document.getElementById('lbImg');
+  img.style.opacity='0';
+  img.style.transform='scale(.95)';
+  setTimeout(()=>{
+    img.src = lbImages[lbIndex];
+    img.onload = function(){ img.style.opacity='1'; img.style.transform='scale(1)'; };
+    const cap = document.getElementById('lbCaption');
+    const base = cap.textContent.replace(/\s*\[\d+ \/ \d+\]$/,'');
+    cap.textContent = base + `  [${lbIndex+1} / ${lbImages.length}]`;
+  }, 180);
+  lbUpdateNav();
+}
+
+function lbUpdateNav(){
+  document.getElementById('lbPrev').classList.toggle('hidden', lbImages.length<=1);
+  document.getElementById('lbNext').classList.toggle('hidden', lbImages.length<=1);
+}
+
+function lbClickOutside(e){
+  if(e.target===document.getElementById('lightbox')) closeLightbox();
+}
+
+document.addEventListener('keydown',e=>{
+  const lbActive = document.getElementById('lightbox').classList.contains('active');
+  if(e.key==='Escape'){
+    if(lbActive){ closeLightbox(); return; }
+    closeLogin();
+  }
+  if(lbActive && e.key==='ArrowLeft'  && lbImages.length>1) lbNav(-1);
+  if(lbActive && e.key==='ArrowRight' && lbImages.length>1) lbNav(1);
+});
+
+// Transición suave
+document.getElementById('lbImg').style.transition='opacity .25s ease, transform .25s ease';
+
 </script>
 </body>
 </html>
